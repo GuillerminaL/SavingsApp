@@ -5,6 +5,7 @@ import bodyParser from 'body-parser';
 import mongoose from 'mongoose';
 
 import currenciesRoutes from './routes/currencies';
+import tagsRoutes from './routes/tags';
 import savingsRoutes from './routes/savings';
 import movementsRoutes from './routes/movements';
 import { get404, get500 } from './controllers/error';
@@ -23,6 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use('/currencies', currenciesRoutes);
+app.use('/tags', tagsRoutes);
 app.use('/savings', savingsRoutes);
 app.use('/movements', movementsRoutes);
 app.use(get404);
