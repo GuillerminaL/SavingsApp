@@ -1,17 +1,22 @@
 import mongoose, { InferSchemaType, Schema } from 'mongoose';
 
 const movementSchema = new Schema({
+        savingId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: 'Saving'
+        },
+        currencyId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: 'Currency'
+        },
         concept: {
             type: String
         },
         amount: {
             type: Number,
             required: true
-        },
-        savingId: {
-            type: Schema.Types.ObjectId,
-            required: true,
-            ref: 'Saving'
         }
     }, 
     {timestamps: true}
