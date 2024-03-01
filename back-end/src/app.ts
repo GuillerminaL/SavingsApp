@@ -14,6 +14,14 @@ const app = express();
 
 app.use(bodyParser.json());
 
+//CORS - Access-Control-Allow-Origin
+app.use((req, res, next) => {
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+    next();
+});
+
 app.use('/currencies', currenciesRoutes);
 app.use('/savings', savingsRoutes);
 app.use('/movements', movementsRoutes);
