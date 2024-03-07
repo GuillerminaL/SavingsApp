@@ -7,8 +7,8 @@ const router = Router();
 router.post('/', addTag);
 router.get('/', getTags);    
                                             //TODO /tags?keyword=:keyword
-router.get('/:currencyId', getTag);
-router.patch('/:currencyId', patchTag); //Name and description
-router.delete('/:currencyId', deleteTag);
+router.get('/:tagId', getTag);
+router.patch('/:tagId', patchTag); //Name and description
+router.delete('/:tagId', deleteTag);
 
 export default router;
