@@ -1,31 +1,45 @@
 import { Request, Response, NextFunction } from 'express';
-import mongoose, { InferSchemaType, isValidObjectId, Types } from 'mongoose';
+import mongoose, { isValidObjectId } from 'mongoose';
 
 import { get500 } from './error';
 import Movement, { MovementType } from '../models/movement';
-import Saving, { SavingType } from '../models/saving';
+import Saving from '../models/saving';
+import Currency from '../models/currency';
 
-type RequestBody = { savingId: string, concept: string, amount: number };
+type RequestBody = { savingId: string, currencyId: string, concept: string, amount: number };
 
 export async function getMovements(req:Request, res:Response, next: NextFunction) {
     const savingId = req.query.savingId as string;
+    const currencyId = req.query.currencyId as string;
     try {
         if ( ! isValidObjectId(savingId) ) {
             return res.status(400).json({message: `Saving id ${savingId} is not a valid id`}); 
         }
-        const saving = await Saving.findById(savingId);
-        if ( ! saving ) {
-            return res.status(404).json({message: `Saving id ${savingId} not found`});
+        if ( currencyId && ! isValidObjectId(currencyId) ) {
+            return res.status(400).json({ message: `Currency id ${currencyId} is not a valid id` }); 
         } 
-        if ( saving.movements.length === 0 ) {
-            return res.status(404).json({ movements: [] });
+        let query = {};
+        if ( currencyId && ! savingId ) {
+            query = { currencyId: currencyId };
         }
-        const movements = await Movement.find({ savingId: savingId });
-        return res.status(200).json({ movements: movements });
+        if ( ! currencyId && savingId ) {
+            query = { savingId: savingId };
+        }
+        if ( currencyId && savingId ) {
+            query = { currencyId: currencyId, savingId: savingId };
+        }
+        const movements = await Movement.find( query );
+        if ( ! movements ) {
+            return res.status(500).json({ 
+                message: 'Something went wrong... We are working hard to solve it!' 
+            });
+        }
+        res.status(200).json({ movements: movements });
     } catch (error) {
         console.log(error);
         get500(req, res, next);
     }
+    //TODO: Pagination
 }
 
 export async function getMovement(req:Request, res:Response, next: NextFunction) {
@@ -64,7 +78,6 @@ export async function patchMovement(req:Request, res:Response, next: NextFunctio
 }
 
 export async function deleteMovement(req:Request, res:Response, next: NextFunction) {
-    // const savingId = req.params.savingId;
     const movementId = req.params.movementId;
     try {
         if ( ! isValidObjectId(movementId) ) {
@@ -74,22 +87,7 @@ export async function deleteMovement(req:Request, res:Response, next: NextFuncti
         if ( ! deletedMovement ) {
             return res.status(404).json({message: `Movement id ${movementId} not found`});
         }
-        //Updates saving...
-        const savingId = deletedMovement.savingId;
-        const saving = await Saving.findById(savingId);
-        //The following check implies that is possible to delete a saving without removing its movements...
-        if ( saving ) {
-            let updatedMovements = saving.movements.filter(movement => {
-                return movement.movementId.toString() !== movementId;
-            });
-            console.log(updatedMovements);
-            saving.movements = updatedMovements as Types.DocumentArray<{movementId: Types.ObjectId; }>;
-            const result = await saving.save();
-            if ( ! result ) {
-                
-            }
-            res.status(200).json({message: 'Deleted Movement', deletedMovement: deletedMovement});
-        }
+        res.status(200).json({message: 'Deleted Movement', deletedMovement: deletedMovement});
     } catch (error) {
         console.log(error);
         get500(req, res, next);
@@ -117,7 +115,8 @@ export async function addMovement(req:Request, res:Response, next: NextFunction)
         const movement = new Movement({
             concept: body.concept,
             amount: enteredAmount,
-            savingId: savingId
+            savingId: savingId,
+            currencyId: saving.currencyId.toString()
         });
         const newMovement = await movement.save();
         if ( ! newMovement ) {
@@ -125,9 +124,8 @@ export async function addMovement(req:Request, res:Response, next: NextFunction)
                 message: 'Something went wrong while saving the movement... Please, try again later' 
             });
         }
-        //Updates saving amount and list of movements...
+        //Updates saving amount...
         saving.amount = oldAmount + enteredAmount;
-        saving.movements.push( {movementId: newMovement._id} );
         const result = await saving.save();
         if ( ! result ) {
             const deleted = await Movement.findByIdAndDelete(newMovement._id);
