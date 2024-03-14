@@ -14,6 +14,11 @@ const savingSchema = new Schema({
         amount: {
             type: Number,
             default: 0
+        },
+        active: {
+            type: Boolean,
+            required: true,
+            default: true
         }
     }, 
     {timestamps: true}
