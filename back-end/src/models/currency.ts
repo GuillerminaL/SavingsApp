@@ -11,7 +11,7 @@ const currencySchema = new Schema({
             required: true
         }
     }, 
-    {timestamps: true}
+    {timestamps: false}
 );
 
 export type CurrencyType = InferSchemaType<typeof currencySchema>;

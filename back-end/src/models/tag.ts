@@ -10,7 +10,7 @@ const tagSchema = new Schema({
             type: String
         }
     }, 
-    {timestamps: true}
+    {timestamps: false}
 );
 
 export type TagType = InferSchemaType<typeof tagSchema>;
