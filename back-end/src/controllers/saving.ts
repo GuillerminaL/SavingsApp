@@ -30,12 +30,12 @@ export async function getSavings(req:Request, res:Response, next: NextFunction) 
             query = { currencyId: currencyId, tagId: tagId };
         }
         const savings = await Saving.find( query )
-            .populate({ path: 'currencyId', select: 'name imageUrl -_id' })
-            .populate({ path: 'tagId', select: 'name description -_id' })
+            .populate({ path: 'currency', select: 'name imageUrl _id' })
+            .populate({ path: 'tag', select: 'name description _id' })
             .exec();
         if ( ! savings ) {
             return res.status(500).json({ 
-                message: 'Something went wrong... We are working hard to solve it!' 
+                message: 'Something went wrong while fetching savings... Please, try again later!' 
             });
         }
         res.status(200).json({ savings: savings });
@@ -52,8 +52,8 @@ export async function getSaving(req:Request, res:Response, next: NextFunction) {
             return res.status(400).json({ message: `Saving id ${savingId} is not a valid id` }); 
         } 
         const saving = await Saving.findById(savingId)
-            .populate({ path: 'currencyId', select: 'name imageUrl -_id' })
-            .populate({ path: 'tagId', select: 'name description -_id' })
+            .populate({ path: 'currency', select: 'name imageUrl _id' })
+            .populate({ path: 'tag', select: 'name description _id' })
             .exec();
         if ( ! saving ) {
             return res.status(404).json({message: `Saving id ${savingId} not found`});
@@ -92,8 +92,8 @@ export async function addSaving(req:Request, res:Response, next: NextFunction) {
         }
         //Creates the new saving...
         const saving = new Saving({
-            currencyId: currencyId,
-            tagId: tagId
+            currency: currencyId,
+            tag: tagId
         });
         const newSaving = await saving.save();
         if ( ! newSaving ) {

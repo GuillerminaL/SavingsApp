@@ -1,12 +1,12 @@
 import mongoose, { InferSchemaType, Schema } from 'mongoose';
 
 const savingSchema = new Schema({
-        tagId: {
+        tag: {
             type: Schema.Types.ObjectId,
             required: true,
             ref: 'Tag'
         },
-        currencyId: {
+        currency: {
             type: Schema.Types.ObjectId,
             required: true,
             ref: 'Currency'

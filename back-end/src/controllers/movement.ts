@@ -116,7 +116,7 @@ export async function addMovement(req:Request, res:Response, next: NextFunction)
             concept: body.concept,
             amount: enteredAmount,
             savingId: savingId,
-            currencyId: saving.currencyId.toString()
+            currencyId: saving.currency.toString()
         });
         const newMovement = await movement.save();
         if ( ! newMovement ) {
