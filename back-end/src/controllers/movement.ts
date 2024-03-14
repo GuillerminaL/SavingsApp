@@ -83,7 +83,7 @@ export async function deleteMovement(req:Request, res:Response, next: NextFuncti
         if ( ! isValidObjectId(movementId) ) {
             return res.status(400).json({ message: `Movement id ${movementId} is not a valid id` }); 
         }
-        const deletedMovement: MovementType | null = await Movement.findByIdAndDelete(movementId);
+        const deletedMovement: MovementType | null = await Movement.findByIdAndUpdate(movementId,  {active: false});
         if ( ! deletedMovement ) {
             return res.status(404).json({message: `Movement id ${movementId} not found`});
         }
