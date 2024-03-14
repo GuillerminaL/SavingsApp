@@ -84,8 +84,9 @@ export async function addSaving(req:Request, res:Response, next: NextFunction) {
         if ( ! tag ) {
             return res.status(409).json({message: `Can not create saving, Tag id ${tagId} does not exist`});
         }
-        const checkExistence = await Saving.findOne({ currencyId: currencyId, tagId: tagId });
-        if ( checkExistence ) {
+        const checkExistence = await Saving.findOne({ currency: currencyId, tag: tagId });
+        console.log(checkExistence);
+        if ( checkExistence) {
             return res.status(400).json({ 
                 message: `Can not create saving, already exists one tagId ${tagId} and currencyId ${currencyId}` 
             });
