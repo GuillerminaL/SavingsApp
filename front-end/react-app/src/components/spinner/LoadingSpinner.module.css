@@ -33,3 +33,9 @@
 }
 
 .ldio div { box-sizing: content-box; }
+
+.grid {
+    display: flex;
+    justify-content: center; 
+    width: 90%;
+}
