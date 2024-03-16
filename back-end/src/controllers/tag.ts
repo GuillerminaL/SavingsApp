@@ -126,7 +126,7 @@ export async function deleteTag(req:Request, res:Response, next: NextFunction) {
         if ( ! isValidObjectId(tagId) ) {
             return res.status(404).json({message: `Tag id ${tagId} is not a valid id`}); 
         }
-        //Checks savings related...
+        //Checks related savings existence (active or inactive)...
         const tagSavings = await Saving.findOne({ tagId: tagId });
         if ( tagSavings ) {
             return res.status(409).json({
