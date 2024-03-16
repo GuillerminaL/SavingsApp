@@ -105,6 +105,10 @@ export async function addMovement(req:Request, res:Response, next: NextFunction)
         if ( ! saving ) {
             return res.status(400).json({ message: `Saving id ${savingId} does not exists` });
         }
+        //Checks saving active state...
+        if ( ! saving.active ) {
+            return res.status(400).json({ message: `Can't add movement. Saving id ${savingId} has been deleted` });
+        }
         //Checks saving amount...
         const enteredAmount = body.amount;
         let oldAmount = saving.amount;
