@@ -132,11 +132,12 @@ export async function removeSaving(req:Request, res:Response, next: NextFunction
         if ( ! isValidObjectId(savingId) ) {
             return res.status(400).json({ message: `Saving id ${savingId} is not a valid id` }); 
         } 
-        const saving = await Saving.findByIdAndDelete(savingId);
+        const saving = await Saving.findByIdAndUpdate(savingId, { active: false });
         if ( ! saving ) {
             return res.status(404).json({message: `Saving id ${savingId} not found`});
         }
-        res.status(200).json({message: 'Deleted saving', deletedSaving: saving});
+        const deletedMovements = await Movement.updateMany({ savingId: savingId }, {$set: { active: false }} );
+        res.status(200).json({message: 'Deleted saving', deletedSaving: saving, updatedMovements: deletedMovements.matchedCount});
     } catch (error) {
         console.log(error);
         get500(req, res, next);
