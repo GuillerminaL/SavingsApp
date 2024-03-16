@@ -126,7 +126,7 @@ export async function deleteCurrency(req:Request, res:Response, next: NextFuncti
         if ( ! isValidObjectId(currencyId) ) {
             return res.status(404).json({message: `Currency id ${currencyId} is not a valid id`}); 
         }
-        //Checks savings related...
+        //Checks related savings existence (active or inactive)...
         const currencySavings = await Saving.findOne({ currencyId: currencyId });
         if ( currencySavings ) {
             return res.status(409).json({
