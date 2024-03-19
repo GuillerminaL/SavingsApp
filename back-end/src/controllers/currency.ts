@@ -4,6 +4,7 @@ import { isValidObjectId } from 'mongoose';
 import { get500 } from './error';
 import Currency from '../models/currency';
 import Saving from '../models/saving';
+import Movement from '../models/movement';
 
 
 type RequestBody = { name: string, imageUrl: string | null };
@@ -131,6 +132,13 @@ export async function deleteCurrency(req:Request, res:Response, next: NextFuncti
         if ( currencySavings ) {
             return res.status(409).json({
                 message: `Can not remove Currency id ${currencyId}. It has related savings`
+            });
+        }
+        //Checks related movements existence (active or inactive)...
+        const currencyMovements = await Movement.findOne({ currencyId: currencyId });
+        if ( currencyMovements ) {
+            return res.status(409).json({
+                message: `Can not remove Currency id ${currencyId}. It has related movements`
             });
         }
         //Deletes and returns...
