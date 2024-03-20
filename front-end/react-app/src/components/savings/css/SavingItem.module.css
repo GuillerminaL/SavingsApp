@@ -2,7 +2,7 @@
   margin: 1rem;
   background-color: aliceblue;
   border-radius: 6px;
-  width: 16rem;
+  width: 25rem;
 }
 
 .image {
@@ -24,8 +24,9 @@
 }
 
 .content h3 {
-  font-size: 1.25rem;
+  font-size: 1.5rem;
   color: #2c292b;
+  margin-left: 1rem;
 }
 
 .inARowContent {
@@ -45,7 +46,7 @@
   object-fit: cover;
 }
 
-.actions {
+/* .actions {
   padding: 1.5rem;
   text-align: center;
 }
@@ -63,4 +64,35 @@
 .actions button:hover,
 .actions button:active {
   background-color: #ffe2ed;
+} */
+
+.actions {
+  background-color: transparent;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-content: center;
+}
+
+.actions button {
+  background-color: transparent;
+  border: none;
+  color: transparent;
+  padding: 1rem;
+}
+
+.actions :hover {
+  color: grey;
+  background-color: lightgray;
+  border-radius: 2%;
+}
+
+.actionsWrapper {
+  display: flex;
+  justify-content: center;
+}
+
+.currencyName {
+  text-transform: uppercase;
+  align-self: center;
 }

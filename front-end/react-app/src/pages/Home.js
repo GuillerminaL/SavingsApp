@@ -1,18 +1,21 @@
 import { useState, useEffect } from 'react';
-import CurrenciesList from '../components/currencies/CurrenciesList';
-import classes from './css/HomePage.module.css';
 
-import NewCurrencyModal from '../components/currencies/NewCurrencyModal';
+import { API_HOST } from '../config/index';
+import classes from './css/HomePage.module.css';
 import Backdrop from '../components/Backdrop';
 import LoadingSpinner from '../components/spinner/LoadingSpinner';
 
+import SavingsList from '../components/savings/SavingsList';
+import NewSavingModal from '../components/savings/NewSavingModal';
+
+
 function HomePage() {
     const [isLoading, setIsLoading] = useState(true);
-    const [loadedCurrencies, setLoadedCurrencies] = useState([]);
+    const [loadedSavings, setLoadedSavings] = useState([]);
 
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
-    function addNewCurrencyHandler() {
+    function openModalHandler() {
         setModalIsOpen(true);
     }
 
@@ -20,28 +23,36 @@ function HomePage() {
         setModalIsOpen(false);
     }
 
+    async function fetchData() {
+        try {
+            const response = await fetch(`${API_HOST}/savings`);
+            const data = await response.json();
+            const savings = []; 
+            for (const key in data.savings) {
+                const saving = {
+                    id: data.savings[key]._id,
+                    tagId: data.savings[key].tag._id,
+                    tagName: data.savings[key].tag.name,
+                    tagDescription: data.savings[key].tag.description,
+                    currencyId: data.savings[key].currency._id,
+                    currencyName: data.savings[key].currency.name,
+                    currencyImage: data.savings[key].currency.imageUrl,
+                    amount: data.savings[key].amount
+                };
+                savings.push(saving);
+            }
+            setIsLoading(false); 
+            setLoadedSavings(savings);
+            console.log(savings);
+        } catch (error) {
+            console.log(error);
+            return;
+        }
+    }
+
     useEffect(() => {
         setIsLoading(true);
-        fetch('https://savings-app-b2edb-default-rtdb.firebaseio.com/currencies.json')
-            .then((response) => { 
-                return response.json(); 
-            })
-            .then((data) => { 
-                const currencies = []; 
-
-                for (const key in data) {
-                    const currency = {
-                        id: key,
-                        currencyName: data[key].currencyName,
-                        amount: data[key].amount,
-                        image: data[key].image
-                    };
-                    currencies.push(currency);
-                }
-
-                setIsLoading(false); 
-                setLoadedCurrencies(currencies);
-            });
+        fetchData();
     }, []);
 
     if (isLoading) {
@@ -53,18 +64,20 @@ function HomePage() {
     }
 
     return (
-        <div className={classes.grid}>
-            <div className={classes.actions}>
-                <button onClick={addNewCurrencyHandler}>
-                     + New Currency Saving
-                </button>
+        <section>
+            <h1>My Savings...</h1>
+            <div className={classes.grid}>
+                <div className={classes.actions}>
+                    <button onClick={openModalHandler}>
+                        + New Saving
+                    </button>
+                </div>
+                {modalIsOpen && <NewSavingModal onCancel={closeModalHandler} onConfirm={closeModalHandler}/>}
+                {modalIsOpen && <Backdrop onClick={closeModalHandler}/>}
+                <SavingsList className={classes.card} savings={loadedSavings}></SavingsList>
             </div>
-            {modalIsOpen && <NewCurrencyModal onCancel={closeModalHandler} onConfirm={closeModalHandler}/>}
-            {modalIsOpen && <Backdrop onClick={closeModalHandler}/>}
-            <CurrenciesList className={classes.card} currencies={loadedCurrencies}></CurrenciesList>
-        </div>
+        </section>
     );
-
 }
 
 export default HomePage;

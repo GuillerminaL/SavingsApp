@@ -1,3 +1,4 @@
+import { API_HOST } from '../../config/index';
 import NewSavingForm from './NewSavingForm';
 import classes from './css/NewSavingModal.module.css';
 
@@ -7,17 +8,20 @@ function NewSavingModal(props) {
         props.onCancel();
     }
 
-    function addSavingHandler(data) {
-        fetch(
-            'https://savings-app-b2edb-default-rtdb.firebaseio.com/savings.json',
+    async function addSavingHandler(data) {
+        try {
+            const response = await fetch(`${API_HOST}/savings`, 
             {
                 method: 'POST',
                 body: JSON.stringify(data),
                 headers: {'Content-Type': 'application/json'}
-            }
-        ).then(() => {
+            });
+            console.log(response.status);
             cancelHandler();
-        });
+        } catch (error) {
+            console.log(error);
+            return;
+        }
     }
 
     return (

@@ -8,9 +8,12 @@ function SavingsList(props) {
         <SavingItem
           key={saving.id}
           id={saving.id}
-          image={saving.image}
-          title={saving.title}
-          description={saving.description}
+          currencyId={saving.currencyId}
+          currencyName={saving.currencyName}
+          currencyImage={saving.currencyImage}
+          tagId={saving.tagId}
+          tagName={saving.tagName}
+          tagDescription={saving.tagDescription}
           amount={saving.amount}
         />
       ))}
