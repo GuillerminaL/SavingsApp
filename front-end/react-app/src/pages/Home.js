@@ -18,7 +18,7 @@ function HomePage() {
     function openModalHandler() {
         setModalIsOpen(true);
     }
-
+    
     function closeModalHandler() {
         setModalIsOpen(false);
     }
@@ -43,7 +43,6 @@ function HomePage() {
             }
             setIsLoading(false); 
             setLoadedSavings(savings);
-            console.log(savings);
         } catch (error) {
             console.log(error);
             return;

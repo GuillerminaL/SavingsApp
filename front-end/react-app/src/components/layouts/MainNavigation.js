@@ -16,8 +16,7 @@ function MainNavigation() {
                     <li><Link to='/'>Home</Link></li>
                     <li><Link to='/currencies'>Currencies</Link></li>
                     <li><Link to='/tags'>Tags</Link></li>
-                    <li>
-                        <Link to='/savings/favorites'>
+                    <li><Link to='/favorites'>
                             Favorites
                             <span className={classes.badge}>{favoritesCtx.totalFavorites}</span>
                         </Link>

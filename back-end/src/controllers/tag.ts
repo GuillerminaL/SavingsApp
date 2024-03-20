@@ -127,7 +127,7 @@ export async function deleteTag(req:Request, res:Response, next: NextFunction) {
             return res.status(404).json({message: `Tag id ${tagId} is not a valid id`}); 
         }
         //Checks related savings existence (active or inactive)...
-        const tagSavings = await Saving.findOne({ tagId: tagId });
+        const tagSavings = await Saving.findOne({ tag: tagId });
         if ( tagSavings ) {
             return res.status(409).json({
                 message: `Can not remove Tag id ${tagId}. It has related savings`

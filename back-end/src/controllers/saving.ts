@@ -21,13 +21,13 @@ export async function getSavings(req:Request, res:Response, next: NextFunction) 
         }
         let query = {};
         if ( currencyId && ! tagId ) {
-            query = { currencyId: currencyId };
+            query = { currency: currencyId };
         }
         if ( ! currencyId && tagId ) {
-            query = { tagId: tagId };
+            query = { tag: tagId };
         }
         if ( currencyId && tagId ) {
-            query = { currencyId: currencyId, tagId: tagId };
+            query = { currency: currencyId, tag: tagId };
         }
         const savings = await Saving.find( query )
             .populate({ path: 'currency', select: 'name imageUrl _id' })
