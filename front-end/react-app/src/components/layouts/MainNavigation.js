@@ -14,6 +14,8 @@ function MainNavigation() {
             <nav>
                 <ul>
                     <li><Link to='/'>Home</Link></li>
+                    <li><Link to='/currencies'>Currencies</Link></li>
+                    <li><Link to='/tags'>Tags</Link></li>
                     <li>
                         <Link to='/savings/favorites'>
                             Favorites
