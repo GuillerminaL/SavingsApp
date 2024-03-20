@@ -5,19 +5,16 @@ import classes from './css/NewCurrencyForm.module.css';
 function NewCurrencyForm(props) {
     const imageInputRef = useRef();
     const currencyNameInputRef = useRef();
-    const amountInputRef = useRef();
 
     function submitHandler(event) {
         event.preventDefault();
 
         const enteredImage = imageInputRef.current.value;
         const enteredCurrencyName = currencyNameInputRef.current.value;
-        const enteredAmount = amountInputRef.current.value;
 
         const currencyData = {
-            image: enteredImage,
-            currencyName: enteredCurrencyName,
-            amount: enteredAmount
+            name: enteredCurrencyName,
+            imageUrl: enteredImage
         };
 
         props.onAddCurrency(currencyData);
@@ -26,19 +23,15 @@ function NewCurrencyForm(props) {
     return (
         <form className={classes.form} onSubmit={submitHandler}>
             <div className={classes.control}>
-                <label htmlFor='image'>Image</label>
-                <input type='url' required id='image' ref={imageInputRef}></input>
-            </div>
-            <div className={classes.control}>
-                <label htmlFor='currencyName'>Currency</label>
+                <label htmlFor='currencyName'>Name</label>
                 <input type='text' required id='currencyName' ref={currencyNameInputRef}></input>
             </div>
             <div className={classes.control}>
-                <label htmlFor='amount'>Amount</label>
-                <input type='text' required id='amount' ref={amountInputRef}></input>
+                <label htmlFor='image'>Image</label>
+                <input type='url' required id='image' ref={imageInputRef}></input>
             </div>
             <div className={classes.actions}>
-                <button>Add New Currency Saving</button>
+                <button>Add New Currency</button>
             </div>
         </form>
     );

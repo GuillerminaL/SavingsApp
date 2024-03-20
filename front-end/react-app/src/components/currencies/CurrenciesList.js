@@ -9,8 +9,7 @@ function CurrenciesList(props) {
           key={currency.id}
           id={currency.id}
           image={currency.image}
-          currencyName={currency.currencyName}
-          amount={currency.amount}
+          name={currency.name}
         />
       ))}
     </ul>

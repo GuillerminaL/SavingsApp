@@ -1,14 +1,14 @@
-import { useContext, useState } from 'react';
+import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
+import { API_HOST } from '../../config/index';
 import Card from '../ui/Card';
 import classes from './css/CurrencyItem.module.css';
-import PlusIcon from '../icons/Plus';
 import FavoritesContext from '../../store/favorites-context';
 import FavoriteOnIcon from '../icons/FavouriteOn';
 import FavoriteOffIcon from '../icons/FavouriteOff';
-import EyeOnIcon from '../icons/EyeOn';
-import EyeOffIcon from '../icons/EyeOff';
+import EditIcon from '../icons/Pen';
+import TrashIcon from '../icons/Trash';
 
 function CurrencyItem(props) {
 
@@ -17,11 +17,23 @@ function CurrencyItem(props) {
     const favoritesCtx = useContext(FavoritesContext);
     const itemIsFavorite = favoritesCtx.itemIsFavorite(props.id);
 
-    const [amountIsVisible, setAmountVisibility] = useState(false);
+    async function editCurrency() {
+        //TODO Patch name and imageUrl
+        console.log("editing " + props.name);
+    }
 
-
-    function showMovementsDetail() {
-        navigate('/currencyDetail');
+    async function deleteCurrency() {
+        try {
+            const response = await fetch(`${API_HOST}/currencies/${props.id}`, {
+                method: 'DELETE'
+            });
+            const data = await response.json();
+            alert(data.message);
+            navigate(0);
+        } catch (error) {
+            console.log(error);
+            return;
+        }
     }
 
     function toggleFavoritesStatusHandler() {
@@ -31,7 +43,7 @@ function CurrencyItem(props) {
             favoritesCtx.addFavorite({
                 id: props.id,
                 image: props.image,
-                currencyName: props.currencyName,
+                name: props.name,
                 amount: props.amount
             });
         }
@@ -41,31 +53,26 @@ function CurrencyItem(props) {
         <li className={classes.item}>
             <Card>
                 <div className={classes.image}>
-                    <img src={props.image} alt={props.currencyName} />
+                    <img src={props.image} alt={props.name} />
                 </div>
-                <div className={classes.content}>
+                <div className={classes.content}> 
+                    <h3>{props.name}</h3>
                     <div className={classes.inARowContent}> 
-                        <h3>{props.currencyName}</h3>
                         <div className={classes.actions}>
+                            {/* TODO */}
+                            <button onClick={(editCurrency)}>
+                                <EditIcon></EditIcon>
+                                <p>Edit</p>
+                            </button>
+                            <button onClick={(deleteCurrency)}>
+                                <TrashIcon></TrashIcon>
+                                <p>Remove</p>
+                            </button>
                             <button className={classes.favourite} onClick={(toggleFavoritesStatusHandler)}>
                                 {itemIsFavorite ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
                                 <p>
                                     {itemIsFavorite ? 'Remove Favourite' : 'Add Favourite'}
                                 </p>
-                            </button>
-                        </div>
-                    </div>
-                    <div className={classes.inARowContent}>
-                        <h2>$ {amountIsVisible ? props.amount : '**********'}</h2>
-                        <button onClick={() => {setAmountVisibility( ! amountIsVisible );}}>
-                            { amountIsVisible ? <EyeOffIcon /> : <EyeOnIcon /> }
-                        </button>
-                    </div>
-                    <div className={classes.actionsWrapper}>
-                        <div className={classes.actions}>
-                            <button onClick={showMovementsDetail}>
-                                <PlusIcon />
-                                <p>Movements</p>
                             </button>
                         </div>
                     </div>
