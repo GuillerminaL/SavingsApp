@@ -1,0 +1,80 @@
+.item {
+    margin: 1rem;
+    background-color: aliceblue;
+    border-radius: 6px;
+    width: 25rem;
+  }
+  
+  .content {
+    text-align: center;
+    padding: 1rem;
+  }
+  
+  .content h3 {
+    font-size: 1.5rem;
+    color: #2c292b;
+    margin-left: 1rem;
+  }
+  
+  .inARowContent {
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    flex-wrap: nowrap;
+  }
+  
+  .inARowContent button {
+    background-color: transparent;
+    border: transparent;
+  }
+  
+  .inARowContent button svg {
+    width: 100%;
+    object-fit: cover;
+  }
+  
+  /* .actions {
+    padding: 1.5rem;
+    text-align: center;
+  }
+  
+  .actions button {
+    font: inherit;
+    cursor: pointer;
+    color: #77002e;
+    border: 1px solid #77002e;
+    background-color: transparent;
+    padding: 0.5rem 1.5rem;
+    border-radius: 4px;
+  }
+  
+  .actions button:hover,
+  .actions button:active {
+    background-color: #ffe2ed;
+  } */
+  
+  .actions {
+    background-color: transparent;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-content: center;
+  }
+  
+  .actions button {
+    background-color: transparent;
+    border: none;
+    color: transparent;
+    padding: 1rem;
+  }
+  
+  .actions :hover {
+    color: grey;
+    background-color: lightgray;
+    border-radius: 2%;
+  }
+  
+  .actionsWrapper {
+    display: flex;
+    justify-content: center;
+  }
