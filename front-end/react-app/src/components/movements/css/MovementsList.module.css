@@ -4,5 +4,8 @@
   padding: 0;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+}
+
+li {
+  margin: .5rem;
 }

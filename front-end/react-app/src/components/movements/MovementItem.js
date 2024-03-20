@@ -1,15 +1,14 @@
 import Card from '../ui/Card';
 import classes from './css/MovementItem.module.css';
 
-function MovementItem(props) {
-    
+function MovementItem(props) {   
     return (
-        <li className={classes.item}>
+        <li>
             <Card>
                 <div className={classes.inARowContent}>
                     <p>{props.createdAt}</p>
                     <p>{props.concept}</p>
-                    <p>{props.amount}</p>
+                    <p>$ {props.amount}</p>
                 </div> 
             </Card>
         </li>

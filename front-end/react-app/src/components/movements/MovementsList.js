@@ -8,9 +8,11 @@ function MovementsList(props) {
         <MovementItem
           key={movement.id}
           id={movement.id}
-          createdAt={movement.createdAt}
+          savingId={movement.savingId}
+          currencyId={movement.currencyId}
           concept={movement.concept}
           amount={movement.amount}
+          createdAt={movement.createdAt}
         />
       ))}
     </ul>
