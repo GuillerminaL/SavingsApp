@@ -8,12 +8,24 @@ import FavoriteOffIcon from '../icons/FavouriteOff';
 import PlusIcon from '../icons/Plus';
 import EyeOnIcon from '../icons/EyeOn';
 import EyeOffIcon from '../icons/EyeOff';
+import AddMovementIcon from '../icons/Piggy';
+import NewMovementModal from '../movements/NewMovementModal';
+import Backdrop from '../Backdrop';
 
 function SavingItem(props) {
     const favoritesCtx = useContext(FavoritesContext);
     const itemIsFavorite = favoritesCtx.itemIsFavorite(props.id);
 
     const [amountIsVisible, setAmountVisibility] = useState(false);
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+
+    function addMovementHandler() {
+        setModalIsOpen(true);
+    }
+
+    function closeModalHandler() {
+        setModalIsOpen(false);
+    }
 
     function toggleFavoritesStatusHandler() {
         if (itemIsFavorite) {
@@ -43,7 +55,19 @@ function SavingItem(props) {
                     <img src={props.currencyImage} alt={props.tagName} />
                 </div>
                 <div className={classes.content}>
-                    <h3>{props.tagName}</h3>
+                    <div className={classes.inARowContent}>
+                        <h3>{props.tagName}</h3>
+                        <div className={classes.actionsWrapper}>
+                            <div className={classes.actions}>
+                                <button className={classes.favourite} onClick={(toggleFavoritesStatusHandler)}>
+                                    {itemIsFavorite ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
+                                    <p>
+                                        {itemIsFavorite ? 'Remove Favourite' : 'Add Favourite'}
+                                    </p>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                     <p>{props.tagDescription}</p>
                     <div className={classes.inARowContent}>
                         <p className={classes.currencyName}>{props.currencyName}</p>
@@ -53,20 +77,24 @@ function SavingItem(props) {
                         </button>
                     </div> 
                 </div>
-                <div className={classes.actionsWrapper}>
+                <div className={classes.inARowContent}>
+                    <div className={classes.actionsWrapper}>
                         <div className={classes.actions}>
+                            <div>
+                                <button onClick={(addMovementHandler)}>
+                                    <AddMovementIcon />
+                                    <p>Add Movement</p>
+                                </button>
+                                {modalIsOpen && <NewMovementModal saving={props} onCancel={closeModalHandler} onConfirm={closeModalHandler}/>}
+                                {modalIsOpen && <Backdrop onClick={closeModalHandler}/>}
+                            </div>
                             <button onClick={showSavingMovements}>
                                 <PlusIcon />
-                                <p>Show detail</p>
-                            </button>
-                            <button className={classes.favourite} onClick={(toggleFavoritesStatusHandler)}>
-                                {itemIsFavorite ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
-                                <p>
-                                    {itemIsFavorite ? 'Remove Favourite' : 'Add Favourite'}
-                                </p>
+                                <p>Show Movements</p>
                             </button>
                         </div>
                     </div>
+                </div>
             </Card>
         </li>
     );
