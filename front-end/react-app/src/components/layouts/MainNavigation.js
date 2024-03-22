@@ -10,7 +10,7 @@ function MainNavigation() {
 
     return (
         <header className={classes.header}>
-            <div className={classes.logo}>Save App</div>
+            <div className={classes.logo}>Savings App</div>
             <nav>
                 <ul>
                     <li><Link to='/'>Home</Link></li>

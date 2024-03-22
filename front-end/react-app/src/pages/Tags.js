@@ -1,14 +1,13 @@
 import { useState, useEffect } from 'react';
 
-import { API_HOST } from '../config/index';
+import { fetchTags } from '../data/data';
 import classes from './css/HomePage.module.css';
 import Backdrop from '../components/Backdrop';
 import LoadingSpinner from '../components/spinner/LoadingSpinner';
 import TagsList from '../components/tags/TagsList';
 import NewTagModal from '../components/tags/NewTagModal';
 
-
-function TagsPage() {
+const TagsPage = () => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedTags, setLoadedTags] = useState([]);
 
@@ -22,30 +21,13 @@ function TagsPage() {
         setModalIsOpen(false);
     }
 
-    async function fetchData() {
-        try {
-            const response = await fetch(`${API_HOST}/tags`);
-            const data = await response.json();
-            const tags = []; 
-            for (const key in data.tags) {
-                const tag = {
-                    id: data.tags[key]._id,
-                    name: data.tags[key].name,
-                    description: data.tags[key].description,
-                };
-                tags.push(tag);
-            }
-            setIsLoading(false); 
-            setLoadedTags(tags);
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-    }
-
     useEffect(() => {
-        setIsLoading(true);
-        fetchData();
+        const getData = async () => {
+            const tags = await fetchTags();
+            setLoadedTags(tags);
+            setIsLoading(false);
+        }
+        getData();
     }, []);
 
     if (isLoading) {

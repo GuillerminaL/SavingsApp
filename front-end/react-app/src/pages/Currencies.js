@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
 
-import { API_HOST } from '../config/index';
+import { fetchCurrencies } from '../data/data';
 import classes from './css/HomePage.module.css';
 import Backdrop from '../components/Backdrop';
 import LoadingSpinner from '../components/spinner/LoadingSpinner';
 import CurrenciesList from '../components/currencies/CurrenciesList';
 import NewCurrencyModal from '../components/currencies/NewCurrencyModal';
-
+import NewCurrencyForm from '../components/currencies/NewCurrencyForm';
 
 function CurrenciesPage() {
     const [isLoading, setIsLoading] = useState(true);
@@ -22,30 +22,13 @@ function CurrenciesPage() {
         setModalIsOpen(false);
     }
 
-    async function fetchData() {
-        try {
-            const response = await fetch(`${API_HOST}/currencies`);
-            const data = await response.json();
-            const currencies = []; 
-            for (const key in data.currencies) {
-                const currency = {
-                    id: data.currencies[key]._id,
-                    name: data.currencies[key].name,
-                    image: data.currencies[key].imageUrl,
-                };
-                currencies.push(currency);
-            }
-            setIsLoading(false); 
-            setLoadedCurrencies(currencies);
-        } catch (error) {
-            console.log(error);
-            return;
-        }
-    }
-
     useEffect(() => {
-        setIsLoading(true);
-        fetchData();
+        const getData = async () => {
+            const currencies = await fetchCurrencies();
+            setLoadedCurrencies(currencies);
+            setIsLoading(false);
+        }
+        getData();
     }, []);
 
     if (isLoading) {
@@ -65,9 +48,12 @@ function CurrenciesPage() {
                         + New Currency
                     </button>
                 </div>
+                <Modal>
+                    <NewCurrencyForm />
+                </Modal>
                 {modalIsOpen && <NewCurrencyModal onCancel={closeModalHandler} onConfirm={closeModalHandler}/>}
                 {modalIsOpen && <Backdrop onClick={closeModalHandler}/>}
-                <CurrenciesList className={classes.card} currencies={loadedCurrencies}></CurrenciesList>
+                <CurrenciesList className={classes.card} currencies={loadedCurrencies} />
             </div>
         </section>
     );

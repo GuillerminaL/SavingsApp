@@ -78,3 +78,10 @@ h1, h2 {
   justify-content: space-around;
   margin-bottom: 30px;
 }
+
+.inARowContent {
+  display: flex;
+  justify-content: space-around;
+  align-content: center;
+  flex-wrap: nowrap;
+}

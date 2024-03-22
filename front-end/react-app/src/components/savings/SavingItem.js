@@ -48,16 +48,6 @@ function SavingItem(props) {
                 <div className={classes.content}>
                     <div className={classes.inARowContent}>
                         <h3>{props.tagName}</h3>
-                        <div className={classes.actionsWrapper}>
-                            <div className={classes.actions}>
-                                <button className={classes.favourite} onClick={(toggleFavoritesStatusHandler)}>
-                                    {itemIsFavorite ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
-                                    <p>
-                                        {itemIsFavorite ? 'Remove Favourite' : 'Add Favourite'}
-                                    </p>
-                                </button>
-                            </div>
-                        </div>
                     </div>
                     <p>{props.tagDescription}</p>
                     <div className={classes.inARowContent}>
@@ -86,6 +76,14 @@ function SavingItem(props) {
                                 </button>
                                 {movementsListModalIsOpen && <MovementsListModal saving={props} onCancel={() => {setMovementsListModalIsOpen(false);}} onConfirm={() => {setMovementsListModalIsOpen(false);}}/>}
                                 {movementsListModalIsOpen && <Backdrop onClick={() => {setMovementsListModalIsOpen(false);}}/>}
+                            </div>
+                            <div>
+                                <button className={classes.favourite} onClick={(toggleFavoritesStatusHandler)}>
+                                    {itemIsFavorite ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
+                                    <p>
+                                        {itemIsFavorite ? 'Remove Favourite' : 'Add Favourite'}
+                                    </p>
+                                </button>
                             </div>
                         </div>
                     </div>
