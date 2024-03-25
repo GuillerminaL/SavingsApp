@@ -1,28 +1,26 @@
 import { useRef } from 'react';
 
-import Card from '../ui/Card';
+import { postData } from '../../data/data';
 import classes from './css/NewMovementForm.module.css';
 
-function NewMovementForm(props) {
+const NewMovementForm = (props) => {
     const conceptInputRef = useRef();
     const amountInputRef = useRef();
 
-    function submitHandler(event) {
+    async function submitHandler(event) {
         event.preventDefault();
-
         const enteredConcept = conceptInputRef.current.value;
         const enteredAmount = Number(amountInputRef.current.value);
-
         const movementData = {
             concept: enteredConcept,
             amount: enteredAmount
         };
-
-        props.onAddMovement(movementData);
+        const response = await postData('movements', movementData);
+        alert(response.status, response.message);
+        props.onSubmitSuccess();
     }
 
     return (
-        <Card>
             <form className={classes.form} onSubmit={submitHandler}>
                 <div className={classes.control}>
                     <label htmlFor='concept'>Concept</label>
@@ -36,7 +34,6 @@ function NewMovementForm(props) {
                     <button>Add Movement</button>
                 </div>
             </form>
-        </Card>
     );
 }
 

@@ -1,12 +1,12 @@
 import { useState } from 'react';
 
 import classes from './css/HomePage.module.css';
-import Backdrop from '../components/Backdrop';
+import Backdrop from '../components/ui/Backdrop';
+import Modal from '../components/ui/modals/Modal';
 import SavingsList from '../components/savings/SavingsList';
-import NewSavingModal from '../components/savings/NewSavingModal';
+import NewSavingForm from '../components/savings/NewSavingForm';
 
 const HomePage = () => {
-   
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     function openModalHandler() {
@@ -26,7 +26,9 @@ const HomePage = () => {
                         + New Saving
                     </button>
                 </div>
-                {modalIsOpen && <NewSavingModal onCancel={closeModalHandler} onConfirm={closeModalHandler}/>}
+                {modalIsOpen && <Modal title={"New Saving"} onCancel={closeModalHandler} onConfirm={closeModalHandler}>
+                                    <NewSavingForm  className={classes.form} onSubmitSuccess={closeModalHandler} />
+                                </Modal>}
                 {modalIsOpen && <Backdrop onClick={closeModalHandler}/>}
                 <SavingsList className={classes.card} />
             </div>

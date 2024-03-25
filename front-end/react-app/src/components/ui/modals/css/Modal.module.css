@@ -12,7 +12,7 @@
 
 .inARowContent {
     display: flex;
-    justify-content: space-around;
+    justify-content: space-between;
     align-content: center;
     flex-wrap: nowrap;
 }

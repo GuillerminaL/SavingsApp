@@ -1,17 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import { fetchCurrencies } from '../data/data';
 import classes from './css/HomePage.module.css';
-import Backdrop from '../components/Backdrop';
-import LoadingSpinner from '../components/spinner/LoadingSpinner';
+import Backdrop from '../components/ui/Backdrop';
+import Modal from '../components/ui/modals/Modal';
 import CurrenciesList from '../components/currencies/CurrenciesList';
-import NewCurrencyModal from '../components/currencies/NewCurrencyModal';
 import NewCurrencyForm from '../components/currencies/NewCurrencyForm';
 
-function CurrenciesPage() {
-    const [isLoading, setIsLoading] = useState(true);
-    const [loadedCurrencies, setLoadedCurrencies] = useState([]);
-
+const CurrenciesPage = () => {
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     function openModalHandler() {
@@ -20,23 +15,6 @@ function CurrenciesPage() {
 
     function closeModalHandler() {
         setModalIsOpen(false);
-    }
-
-    useEffect(() => {
-        const getData = async () => {
-            const currencies = await fetchCurrencies();
-            setLoadedCurrencies(currencies);
-            setIsLoading(false);
-        }
-        getData();
-    }, []);
-
-    if (isLoading) {
-        return (
-            <section>
-                <LoadingSpinner />
-            </section>
-        );
     }
 
     return (
@@ -48,12 +26,11 @@ function CurrenciesPage() {
                         + New Currency
                     </button>
                 </div>
-                <Modal>
-                    <NewCurrencyForm />
-                </Modal>
-                {modalIsOpen && <NewCurrencyModal onCancel={closeModalHandler} onConfirm={closeModalHandler}/>}
+                {modalIsOpen && <Modal title={"New Currency"} onCancel={closeModalHandler} onConfirm={closeModalHandler}>
+                                    <NewCurrencyForm  className={classes.form} onSubmitSuccess={closeModalHandler} />
+                                </Modal>}
                 {modalIsOpen && <Backdrop onClick={closeModalHandler}/>}
-                <CurrenciesList className={classes.card} currencies={loadedCurrencies} />
+                <CurrenciesList className={classes.card} />
             </div>
         </section>
     );

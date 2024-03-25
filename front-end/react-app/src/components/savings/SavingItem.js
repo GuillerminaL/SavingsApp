@@ -1,6 +1,6 @@
 import { useContext, useState } from 'react';
 
-import Card from '../ui/Card';
+import Card from '../ui/card/Card';
 import classes from './css/SavingItem.module.css';
 import FavoritesContext from '../../store/favorites-context';
 import FavoriteOnIcon from '../icons/FavouriteOn';
@@ -9,12 +9,13 @@ import PlusIcon from '../icons/Plus';
 import EyeOnIcon from '../icons/EyeOn';
 import EyeOffIcon from '../icons/EyeOff';
 import AddMovementIcon from '../icons/Piggy';
-import NewMovementModal from '../movements/NewMovementModal';
-import MovementsListModal from '../movements/MovementsListModal';
-import Backdrop from '../Backdrop';
+import Modal from '../ui/modals/Modal';
+import Backdrop from '../ui/Backdrop';
+import MovementsList from '../movements/MovementsList';
+import NewMovementForm from '../movements/NewMovementForm';
 
 
-function SavingItem(props) {
+const SavingItem = (props) => {
     const favoritesCtx = useContext(FavoritesContext);
     const itemIsFavorite = favoritesCtx.itemIsFavorite(props.id);
 
@@ -62,20 +63,16 @@ function SavingItem(props) {
                     <div className={classes.actionsWrapper}>
                         <div className={classes.actions}>
                             <div>
-                                <button onClick={() => {setModalIsOpen(true);}}>
-                                    <AddMovementIcon />
-                                    <p>Add Movement</p>
-                                </button>
-                                {modalIsOpen && <NewMovementModal saving={props} onCancel={() => {setModalIsOpen(false);}} onConfirm={() => {setModalIsOpen(false);}}/>}
-                                {modalIsOpen && <Backdrop onClick={() => {setModalIsOpen(false);}}/>}
-                            </div>
-                            <div>
                                 <button onClick={() => {setMovementsListModalIsOpen(true);}}>
                                     <PlusIcon />
                                     <p>Show Movements</p>
                                 </button>
-                                {movementsListModalIsOpen && <MovementsListModal saving={props} onCancel={() => {setMovementsListModalIsOpen(false);}} onConfirm={() => {setMovementsListModalIsOpen(false);}}/>}
-                                {movementsListModalIsOpen && <Backdrop onClick={() => {setMovementsListModalIsOpen(false);}}/>}
+                            </div>
+                            <div>
+                                <button onClick={() => {setModalIsOpen(true);}}>
+                                    <AddMovementIcon />
+                                    <p>Add Movement</p>
+                                </button>
                             </div>
                             <div>
                                 <button className={classes.favourite} onClick={(toggleFavoritesStatusHandler)}>
@@ -89,6 +86,19 @@ function SavingItem(props) {
                     </div>
                 </div>
             </Card>
+            {movementsListModalIsOpen && <Modal title={"Movements Detail"} onCancel={() => {setMovementsListModalIsOpen(false);}} onConfirm={() => {setMovementsListModalIsOpen(false);}}>
+                                            <div className={classes.control}>
+                                                <h3>Saving: {props.tagName}</h3>
+                                                <h3>Currency: {props.currencyName}</h3>
+                                            </div>
+                                            <MovementsList savingId={props.id} />
+                                        </Modal>}
+            {movementsListModalIsOpen && <Backdrop onClick={() => {setMovementsListModalIsOpen(false);}}/>}
+            
+            {modalIsOpen && <Modal title={"New Movement"} onCancel={() => {setModalIsOpen(false);}} onConfirm={() => {setModalIsOpen(false);}}>
+                                <NewMovementForm className={classes.form} onSubmitSuccess={() => {setModalIsOpen(false);}} />
+                            </Modal>}
+            {modalIsOpen && <Backdrop onClick={() => {setModalIsOpen(false);}}/>}           
         </li>
     );
 }

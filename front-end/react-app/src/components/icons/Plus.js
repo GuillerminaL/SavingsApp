@@ -1,4 +1,4 @@
-function Plus() {
+const Plus = () => {
     return (
         <svg width="45px" height="45px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="-2.56 -2.56 37.12 37.12" enableBackground="new 0 0 32 32" xmlSpace="preserve" fill="#808184" stroke="#808184" strokeWidth="0.768">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

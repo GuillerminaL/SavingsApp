@@ -1,16 +1,12 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 
-import { fetchTags } from '../data/data';
 import classes from './css/HomePage.module.css';
-import Backdrop from '../components/Backdrop';
-import LoadingSpinner from '../components/spinner/LoadingSpinner';
+import Backdrop from '../components/ui/Backdrop';
+import Modal from '../components/ui/modals/Modal';
 import TagsList from '../components/tags/TagsList';
-import NewTagModal from '../components/tags/NewTagModal';
+import NewTagForm from '../components/tags/NewTagForm';
 
 const TagsPage = () => {
-    const [isLoading, setIsLoading] = useState(true);
-    const [loadedTags, setLoadedTags] = useState([]);
-
     const [modalIsOpen, setModalIsOpen] = useState(false);
 
     function openModalHandler() {
@@ -19,23 +15,6 @@ const TagsPage = () => {
 
     function closeModalHandler() {
         setModalIsOpen(false);
-    }
-
-    useEffect(() => {
-        const getData = async () => {
-            const tags = await fetchTags();
-            setLoadedTags(tags);
-            setIsLoading(false);
-        }
-        getData();
-    }, []);
-
-    if (isLoading) {
-        return (
-            <section>
-                <LoadingSpinner />
-            </section>
-        );
     }
 
     return (
@@ -47,9 +26,11 @@ const TagsPage = () => {
                         + New Tag
                     </button>
                 </div>
-                {modalIsOpen && <NewTagModal onCancel={closeModalHandler} onConfirm={closeModalHandler}/>}
+                {modalIsOpen && <Modal title={"New Tag"} onCancel={closeModalHandler} onConfirm={closeModalHandler}>
+                                    <NewTagForm className={classes.form} onSubmitSuccess={closeModalHandler}/>
+                                </Modal>}
                 {modalIsOpen && <Backdrop onClick={closeModalHandler}/>}
-                <TagsList className={classes.card} tags={loadedTags}></TagsList>
+                <TagsList className={classes.card} />
             </div>
         </section>
     );

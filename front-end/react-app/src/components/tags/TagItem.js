@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { API_HOST } from '../../config/index';
-import Card from '../ui/Card';
+import { deleteData } from '../../data/data';
+import Card from '../ui/card/Card';
 import classes from './css/TagItem.module.css';
 import FavoritesContext from '../../store/favorites-context';
 import FavoriteOnIcon from '../icons/FavouriteOn';
@@ -10,10 +10,8 @@ import FavoriteOffIcon from '../icons/FavouriteOff';
 import EditIcon from '../icons/Pen';
 import TrashIcon from '../icons/Trash';
 
-function TagItem(props) {
-
+const TagItem = (props) => {
     const navigate = useNavigate();
-
     const favoritesCtx = useContext(FavoritesContext);
     const itemIsFavorite = favoritesCtx.itemIsFavorite(props.id);
 
@@ -23,16 +21,12 @@ function TagItem(props) {
     }
 
     async function deleteTag() {
-        try {
-            const response = await fetch(`${API_HOST}/tags/${props.id}`, {
-                method: 'DELETE'
-            });
-            const data = await response.json();
-            alert(data.message);
+        const response = await deleteData('tags', props.id);
+        if ( response.status === 200 ) {
+            alert(response.status, response.message);
             navigate(0);
-        } catch (error) {
-            console.log(error);
-            return;
+        } else {
+            alert(response.status, response.message);
         }
     }
 

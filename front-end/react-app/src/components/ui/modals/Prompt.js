@@ -1,5 +1,4 @@
-const Modal = (props) => {
-    const { title, children } = props;
+const Promp = (props) => {
 
     function cancelHandler() {
         props.onCancel();
@@ -11,7 +10,7 @@ const Modal = (props) => {
 
     return (
         <div className="modal">
-            <h2>Sure you wanna delete this?</h2>
+            <h2>props.message</h2>
             <button className="btn" onClick={cancelHandler}>Cancel</button>
             <button className="btn" onClick={confirmHandler}>Confirm</button>
         </div>

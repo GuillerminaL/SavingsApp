@@ -1,4 +1,4 @@
-function Piggy() {
+const Piggy = () => {
     return (
         <svg height="40px" width="40px" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 392.727 392.727" xmlSpace="preserve" fill="#000000">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>

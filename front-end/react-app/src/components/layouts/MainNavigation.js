@@ -5,7 +5,7 @@ import classes from './css/MainNavigation.module.css';
 import FavoritesContext from '../../store/favorites-context';
 
 
-function MainNavigation() {
+const MainNavigation = () => {
     const favoritesCtx = useContext(FavoritesContext);
 
     return (

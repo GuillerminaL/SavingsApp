@@ -1,19 +1,47 @@
 import { useRef, useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-import { fetchCurrencies, fetchTags } from '../../data/data';
-import { addSaving } from '../../data/data';
-import Card from '../ui/Card';
+import { fetchData, postData } from '../../data/data';
 import classes from './css/NewSavingForm.module.css';
 import LoadingSpinner from '../spinner/LoadingSpinner';
 
-
 const NewSavingForm = (props) => {
+    const navigate = useNavigate();
     const [isLoading, setIsLoading] = useState(true);
     const [loadedCurrencies, setLoadedCurrencies] = useState([]);
     const [loadedTags, setLoadedTags] = useState([]); 
 
     const currencyIdInputRef = useRef();
     const tagIdInputRef = useRef();
+
+    async function getCurrenciesData() {
+        const data = await fetchData('currencies');
+        const currencies = [];
+        for (const key in data.currencies) {
+            const currency = {
+                key: data.currencies[key]._id,
+                id: data.currencies[key]._id,
+                name: data.currencies[key].name
+            };
+            currencies.push(currency);
+        }
+        setLoadedCurrencies(currencies);
+    }
+
+    async function getTagsData() {
+        const data = await fetchData('tags');
+        const tags = [];
+        for (const key in data.tags) {
+            const tag = {
+                key: data.tags[key]._id,
+                id: data.tags[key]._id,
+                name: data.tags[key].name
+            }
+            tags.push(tag);
+        }
+        setLoadedTags(tags);
+        setIsLoading(false);
+    }
 
     async function submitHandler(event) {
         event.preventDefault();
@@ -23,21 +51,19 @@ const NewSavingForm = (props) => {
             currencyId: enteredCurrencyId,
             tagId: enteredTagId
         };
-
-        const response = await addSaving(savingData);
-        alert(response.status, response.message);
-        props.onSubmitSuccess();
+        const response = await postData('savings', savingData);
+        if ( response.status === 201 ) {
+            alert(response.status, response.response.message);
+            navigate(0);
+        } else {
+            alert(response.status, response.response.message);
+            props.onSubmitSuccess();
+        }   
     }
 
     useEffect(() => {
-        const getData = async () => {
-            const currencies = await fetchCurrencies();
-            const tags = await fetchTags();
-            setLoadedCurrencies(currencies);
-            setLoadedTags(tags);
-            setIsLoading(false);
-        };
-        getData();
+        getCurrenciesData();
+        getTagsData();
     }, []);
 
     if (isLoading) {
@@ -49,31 +75,29 @@ const NewSavingForm = (props) => {
     }
 
     return (
-        <Card>
-            <form className={classes.form} onSubmit={submitHandler}>
-                <div className={classes.control}>
-                    <div>
-                        <label>Currency:</label>
-                        <select>
-                            {loadedCurrencies.map(({ id, name }) => 
-                            <option value={id} id={id} ref={currencyIdInputRef}>{name}</option>)}
-                        </select>    
-                    </div>
+        <form className={classes.form} onSubmit={submitHandler}>
+            <div className={classes.control}>
+                <div>
+                    <label>Currency:</label>
+                    <select>
+                        {loadedCurrencies.map(({ id, name }) => 
+                        <option value={id} id={id} ref={currencyIdInputRef}>{name}</option>)}
+                    </select>    
                 </div>
-                <div className={classes.control}>
-                    <div>
-                    <label>Tag:</label>
-                        <select>
-                            {loadedTags.map(({ id, name }) => 
-                            <option value={id} id={id} ref={tagIdInputRef}>{name}</option>)}
-                        </select>    
-                    </div>
+            </div>
+            <div className={classes.control}>
+                <div>
+                <label>Tag:</label>
+                    <select>
+                        {loadedTags.map(({ id, name }) => 
+                        <option value={id} id={id} ref={tagIdInputRef}>{name}</option>)}
+                    </select>    
                 </div>
-                <div className={classes.actions}>
-                    <button>Add Saving</button>
-                </div>
-            </form>
-        </Card>
+            </div>
+            <div className={classes.actions}>
+                <button>Add Saving</button>
+            </div>
+        </form>
     );
 }
 

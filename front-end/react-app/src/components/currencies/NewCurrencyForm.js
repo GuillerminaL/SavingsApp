@@ -1,23 +1,30 @@
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { postData } from '../../data/data';
 import classes from './css/NewCurrencyForm.module.css';
 
-function NewCurrencyForm(props) {
+const NewCurrencyForm = (props) => {
+    const navigate = useNavigate();
     const imageInputRef = useRef();
     const currencyNameInputRef = useRef();
 
-    function submitHandler(event) {
+    async function submitHandler(event) {
         event.preventDefault();
-
         const enteredImage = imageInputRef.current.value;
         const enteredCurrencyName = currencyNameInputRef.current.value;
-
         const currencyData = {
             name: enteredCurrencyName,
             imageUrl: enteredImage
         };
-
-        props.onAddCurrency(currencyData);
+        const response = await postData('currencies', currencyData);
+        if ( response.status === 201 ) {
+            alert(response.status, response.message);
+            navigate(0);
+        } else {
+            alert(response.status, response.message);
+            props.onSubmitSuccess();
+        }        
     }
 
     return (

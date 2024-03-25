@@ -1,23 +1,29 @@
 import { useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 
+import { postData } from '../../data/data';
 import classes from './css/NewTagForm.module.css';
 
-function NewTagForm(props) {
+const NewTagForm = () => {
+    const navigate = useNavigate();
     const nameInputRef = useRef();
     const descriptionInputRef = useRef();
 
-    function submitHandler(event) {
+    async function submitHandler(event) {
         event.preventDefault();
-
         const enteredName = nameInputRef.current.value;
         const enteredDescription = descriptionInputRef.current.value;
-
         const tagData = {
             name: enteredName,
             description: enteredDescription
         };
-
-        props.onAddTag(tagData);
+        const response = await postData('tags', tagData);
+        if ( response.status === 201 ) {
+            alert(response.status, response.message);
+            navigate(0);
+        } else {
+            alert(response.status, response.message);
+        }
     }
 
     return (

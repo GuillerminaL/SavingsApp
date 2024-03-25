@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { API_HOST } from '../../config/index';
-import Card from '../ui/Card';
+import { deleteData } from '../../data/data';
+import Card from '../ui/card/Card';
 import classes from './css/CurrencyItem.module.css';
 import FavoritesContext from '../../store/favorites-context';
 import FavoriteOnIcon from '../icons/FavouriteOn';
@@ -10,10 +10,8 @@ import FavoriteOffIcon from '../icons/FavouriteOff';
 import EditIcon from '../icons/Pen';
 import TrashIcon from '../icons/Trash';
 
-function CurrencyItem(props) {
-
+const CurrencyItem = (props) => {
     const navigate = useNavigate();
-
     const favoritesCtx = useContext(FavoritesContext);
     const itemIsFavorite = favoritesCtx.itemIsFavorite(props.id);
 
@@ -23,17 +21,9 @@ function CurrencyItem(props) {
     }
 
     async function deleteCurrency() {
-        try {
-            const response = await fetch(`${API_HOST}/currencies/${props.id}`, {
-                method: 'DELETE'
-            });
-            const data = await response.json();
-            alert(data.message);
-            navigate(0);
-        } catch (error) {
-            console.log(error);
-            return;
-        }
+        const response = await deleteData('currencies', props.id);
+        alert(response.status, response.message);
+        navigate(0);
     }
 
     function toggleFavoritesStatusHandler() {
