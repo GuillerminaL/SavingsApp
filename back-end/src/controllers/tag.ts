@@ -11,7 +11,7 @@ type RequestBody = { name: string, description: string };
  * Function getTags: 
  *      - Returns all tags or tags whose name contains the specified name keyword
  * @param req Optional query param: name
- * @param res res.status().json{message} | res.status(200).json{message, tags: []}
+ * @param res res.status().json{message} | res.status(200).json{tags: []}
  * @returns 404 - There´s no tag named as specified
  *          200 - All existing tags
  *          200 - Tags filtered by 'name' containing the provided keyword (optional query param)
