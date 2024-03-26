@@ -12,7 +12,7 @@ type RequestBody = { name: string, imageUrl: string | null };
  * Function getCurrencies: 
  *      - Returns all currencies or currencies whose name contains the specified name keyword
  * @param req Optional query param: name
- * @param res res.status().json{message} | res.status(200).json{message, currencies: []}
+ * @param res res.status().json{message} | res.status(200).json{currencies: []}
  * @returns 404 - There´s no currency named as specified
  *          200 - All existing currencies
  *          200 - Currency filtered by 'name' containing keyword (optional query param)
