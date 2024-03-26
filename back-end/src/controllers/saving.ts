@@ -6,12 +6,23 @@ import Saving from '../models/saving';
 import Tag from '../models/tag';
 import Currency from '../models/currency';
 import Movement from '../models/movement';
+import { json } from 'body-parser';
 
 type RequestBody = { currencyId: string, tagId: string };
 
+/**
+ * Function getSavings:
+ * @param req Query params (optional): currencyId, tagId, active (true/false)
+ * @param res res.status().json{message} | res.status(201).json{savings: []}
+ * @returns 500 - Internal error
+ *          400 - Invalid ids
+ *          200 - All existing savings populated with currency and tag info
+ *          200 - Savings filtered by query params populated with currency and tag info
+ */
 export async function getSavings(req:Request, res:Response, next: NextFunction) {
     const currencyId = req.query.currencyId;
     const tagId = req.query.tagId;
+    const active = req.query.active;
     try {
         if ( currencyId && ! isValidObjectId(currencyId) ) {
             return res.status(400).json({ message: `Currency id ${currencyId} is not a valid id` }); 
@@ -19,17 +30,25 @@ export async function getSavings(req:Request, res:Response, next: NextFunction) 
         if ( tagId && ! isValidObjectId(tagId) ) {
             return res.status(400).json({ message: `Tag id ${tagId} is not a valid id` }); 
         }
-        let query = {};
-        if ( currencyId && ! tagId ) {
-            query = { currency: currencyId };
+        //Query construction...
+        let stringQuery: string = `{`;
+        let q = 0;
+        if ( currencyId ) {
+            stringQuery += `"currency": "${currencyId}"`;
+            q += 1;
         }
-        if ( ! currencyId && tagId ) {
-            query = { tag: tagId };
+        if ( tagId ) {
+            if ( q > 0 ) { stringQuery += `, `; }
+            stringQuery += `"tag": "${tagId}"`;
+            q += 1;
         }
-        if ( currencyId && tagId ) {
-            query = { currency: currencyId, tag: tagId };
+        if ( active && ( active === 'true' || active === 'false' )) { 
+            if ( q > 0 ) { stringQuery += `, `; }
+            stringQuery += `"active": "${active}"`; 
         }
-        const savings = await Saving.find( query )
+        stringQuery += `}`;
+        const jsonQuery = JSON.parse(stringQuery);
+        const savings = await Saving.find( jsonQuery )
             .populate({ path: 'currency', select: 'name imageUrl _id' })
             .populate({ path: 'tag', select: 'name description _id' })
             .exec();
@@ -109,6 +128,13 @@ export async function addSaving(req:Request, res:Response, next: NextFunction) {
     }
 }
 
+/**
+ * Function patchSaving:
+ *      - TODO : Should provide a way to convert money amount to another currency
+ * @param req 
+ * @param res 
+ * @param next 
+ */
 export function patchSaving(req:Request, res:Response, next: NextFunction) {
     const savingId = req.params.savingId;
     const enteredCurrencyId: string = req.body.currencyId;
@@ -126,6 +152,16 @@ export function patchSaving(req:Request, res:Response, next: NextFunction) {
     }
 }
 
+/**
+ * Function removeSaving:
+ *      - Sets the saving active state = false  (logical delete)
+ *      - Sets all related movements active state = false (logical delete)
+ * @param req Param: savingId
+ * @param res res.status().json{message} | res.status(201).json{message, deletedSaving, count of deleted movements}
+ * @returns 500 - Internal error
+ *          400 - Invalid ids
+ *          200 - Saving and movements have been deleted (active state = false)
+ */
 export async function removeSaving(req:Request, res:Response, next: NextFunction) {
     const savingId = req.params.savingId;
     try {
