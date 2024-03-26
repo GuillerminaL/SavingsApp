@@ -5,8 +5,7 @@ import { getCurrencies, getCurrency, addCurrency, patchCurrency, deleteCurrency 
 const router = Router();
 
 router.post('/', addCurrency);
-router.get('/', getCurrencies);    
-                                            //TODO /currencies?keyword=:keyword
+router.get('/', getCurrencies);    //currencies?name=name                       
 router.get('/:currencyId', getCurrency);
 router.patch('/:currencyId', patchCurrency); //Name and imageUrl
 router.delete('/:currencyId', deleteCurrency);
