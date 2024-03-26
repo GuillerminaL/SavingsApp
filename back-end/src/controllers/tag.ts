@@ -5,11 +5,31 @@ import { get500 } from './error';
 import Tag from '../models/tag';
 import Saving from '../models/saving';
 
-
 type RequestBody = { name: string, description: string | null };
 
+/**
+ * Function getTags: 
+ *      - Returns all tags or tags whose name contains the specified name keyword
+ * @param req Optional query param: name
+ * @param res res.status().json{message} | res.status(200).json{message, tags: []}
+ * @returns 404 - There´s no tag named as specified
+ *          200 - All existing tags
+ *          200 - Tags filtered by 'name' containing the provided keyword (optional query param)
+ */
 export async function getTags(req:Request, res:Response, next: NextFunction) {
+    const enteredName = req.query.name as string;
     try {
+        if ( enteredName ) {
+            const regex = new RegExp(enteredName, 'i') // i for case insensitive
+            const tags = await Tag.find({ name: {$regex: regex} });
+            if ( ! tags ) {
+                return res.status(500).json({message: `Something went wrong... We are working hard to solve it!`});   
+            }
+            if ( tags.length === 0 ) {
+                return res.status(404).json({message: `There's no tag with name containing '${enteredName}'`, tags: tags }); 
+            }
+            return res.status(200).json({tags: tags});
+        } 
         const tags = await Tag.find();
         if ( ! tags ) {
             return res.status(404).json({ 
