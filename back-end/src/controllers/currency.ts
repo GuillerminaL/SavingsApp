@@ -10,21 +10,26 @@ type RequestBody = { name: string, imageUrl: string | null };
 
 /**
  * Function getCurrencies: 
+ *      - Returns all currencies or currencies whose name contains the specified name keyword
  * @param req Optional query param: name
  * @param res res.status().json{message} | res.status(200).json{message, currencies: []}
  * @returns 404 - There´s no currency named as specified
  *          200 - All existing currencies
- *          200 - Currency filtered by 'name' (optional query param)
+ *          200 - Currency filtered by 'name' containing keyword (optional query param)
  */
 export async function getCurrencies(req:Request, res:Response, next: NextFunction) {
     const enteredName = req.query.name as string;
     try {
         if ( enteredName ) {
-            const currency = await Currency.findOne({ name: enteredName.toLowerCase() });
-            if ( ! currency ) {
-                return res.status(404).json({message: `There´s no currency named '${enteredName}'`});   
+            const regex = new RegExp(enteredName, 'i') // i for case insensitive
+            const currencies = await Currency.find({ name: {$regex: regex} });
+            if ( ! currencies ) {
+                return res.status(500).json({message: `Something went wrong... We are working hard to solve it!`});   
             }
-            return res.status(200).json({currency: currency});
+            if ( currencies.length === 0 ) {
+                return res.status(404).json({message: `There´s no currencies with name containing '${enteredName}'`, currencies: currencies});   
+            }
+            return res.status(200).json({currencies: currencies});
         } 
         const currencies = await Currency.find();
         if ( ! currencies ) {
