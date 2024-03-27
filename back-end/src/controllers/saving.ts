@@ -2,11 +2,11 @@ import { Request, Response, NextFunction } from 'express';
 import { isValidObjectId } from 'mongoose';
 
 import { get500 } from './error';
-import Saving from '../models/saving';
+import Saving, { PopulatedSavingType, SavingType } from '../models/saving';
 import Tag from '../models/tag';
 import Currency from '../models/currency';
 import Movement from '../models/movement';
-import { json } from 'body-parser';
+import { CURRENCY_CODES, currencyConvertion } from '../utils/converter';
 
 type RequestBody = { currencyId: string, tagId: string };
 
@@ -69,17 +69,34 @@ export async function getSavings(req:Request, res:Response, next: NextFunction) 
 }
 
 export async function getSaving(req:Request, res:Response, next: NextFunction) {
-    const savingId = req.params.savingId;
+    const savingId = req.params.savingId as string;
+    const enteredCode = req.query.currencyCodeTo as string;
     try {
         if ( ! isValidObjectId(savingId) ) {
             return res.status(400).json({ message: `Saving id ${savingId} is not a valid id` }); 
         } 
         const saving = await Saving.findById(savingId)
-            .populate({ path: 'currency', select: 'name imageUrl _id' })
+            .populate({ path: 'currency', select: 'code name imageUrl _id' })
             .populate({ path: 'tag', select: 'name description _id' })
-            .exec();
+            .exec() as  PopulatedSavingType | null;
         if ( ! saving ) {
             return res.status(404).json({message: `Saving id ${savingId} not found`});
+        }       
+        //Currency converter
+        if ( enteredCode ) {
+            if ( ! CURRENCY_CODES.includes(enteredCode) ) {
+                return res.status(400).json({
+                    message: `Currency code ${enteredCode} is not a valid currency conversion code`, 
+                    validCodes: CURRENCY_CODES });
+            }
+            const codeFrom = saving.currency.code;
+            console.log(codeFrom, enteredCode);
+            const amount = Number(saving.amount);
+            const convertion = await currencyConvertion(enteredCode, codeFrom, amount);
+            if ( typeof convertion === "string" ) {
+                return res.status(400).json({ message: convertion });
+            }
+            return res.status(200).json({saving: saving, convertion: convertion});
         }
         res.status(200).json({saving: saving});
     } catch (error) {

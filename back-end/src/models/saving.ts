@@ -1,4 +1,6 @@
 import mongoose, { InferSchemaType, Schema } from 'mongoose';
+import { CurrencyType } from './currency';
+import { TagType } from './tag';
 
 const savingSchema = new Schema({
         tag: {
@@ -25,6 +27,15 @@ const savingSchema = new Schema({
 );
 
 export type SavingType = InferSchemaType<typeof savingSchema>;
+
+export type PopulatedSavingType = {
+    tag: TagType,
+    currency: CurrencyType,
+    amount: Number,
+    active: Boolean,
+    createdAt: Date,
+    updatedAt: Date
+};
 
 export default mongoose.model('Saving', savingSchema);
 

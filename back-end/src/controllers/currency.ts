@@ -5,8 +5,17 @@ import { get500 } from './error';
 import Currency from '../models/currency';
 import Saving from '../models/saving';
 import Movement from '../models/movement';
+import { CURRENCY_CODES, CURRENCY_NAMES } from '../utils/converter';
 
 type RequestBody = { name: string, imageUrl: string | null };
+
+export async function getCurrencyCodes(req:Request, res:Response, next: NextFunction) {
+    return res.status(200).json({ currencyCodes: CURRENCY_CODES });
+}
+
+export async function getCurrencyNames(req:Request, res:Response, next: NextFunction) {
+    return res.status(200).json({ currencyNames: CURRENCY_NAMES });
+}
 
 /**
  * Function getCurrencies: 
