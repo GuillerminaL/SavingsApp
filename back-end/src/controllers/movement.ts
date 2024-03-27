@@ -1,34 +1,64 @@
 import { Request, Response, NextFunction } from 'express';
-import mongoose, { isValidObjectId } from 'mongoose';
+import { isValidObjectId } from 'mongoose';
 
 import { get500 } from './error';
 import Movement, { MovementType } from '../models/movement';
 import Saving from '../models/saving';
-import Currency from '../models/currency';
 
 type RequestBody = { savingId: string, currencyId: string, concept: string, amount: number };
 
+/**
+ * Function getMovements:
+ *      - Retrieves a list of max 10 movements, sorted by creation date descending
+ * @param req Query Params (optional): savingId, currencyId, active (true/false), page, limit
+ * @param res res.status().json{message} | res.status(201).json{movements: []}
+ * @returns 500 - Internal error
+ *          400 - Invalid ids or no boolean active
+ *          200 - List of max 10 movements, sorted by creation date descending
+ *          200 - Savings filtered by the specified query params
+ */
 export async function getMovements(req:Request, res:Response, next: NextFunction) {
     const savingId = req.query.savingId as string;
     const currencyId = req.query.currencyId as string;
+    const active = (req.query.active as string)?.toLowerCase();
+    let page = Number(req.query.page);
+    let limit = Number(req.query.limit);
+    const maxLimit: number = 10;
     try {
-        if ( ! isValidObjectId(savingId) ) {
+        if ( savingId && ! isValidObjectId(savingId) ) {
             return res.status(400).json({message: `Saving id ${savingId} is not a valid id`}); 
         }
         if ( currencyId && ! isValidObjectId(currencyId) ) {
             return res.status(400).json({ message: `Currency id ${currencyId} is not a valid id` }); 
-        } 
-        let query = {};
-        if ( currencyId && ! savingId ) {
-            query = { currencyId: currencyId };
         }
-        if ( ! currencyId && savingId ) {
-            query = { savingId: savingId };
+        if ( active && active !== 'true' && active !== 'false' ) {
+            return res.status(400).json({ message: `Invalid -no boolean- active param '${active}'` }); 
         }
-        if ( currencyId && savingId ) {
-            query = { currencyId: currencyId, savingId: savingId };
+        //Query construction...
+        let stringQuery: string = `{`;
+        let q = 0;
+        if ( savingId ) {
+            stringQuery += `"savingId": "${savingId}"`;
+            q += 1;
         }
-        const movements = await Movement.find( query );
+        if ( currencyId ) {
+            if ( q > 0 ) { stringQuery += `, `; }
+            stringQuery += `"currencyId": "${currencyId}"`;
+            q += 1;
+        }
+        if ( active ) { 
+            if ( q > 0 ) { stringQuery += `, `; }
+            stringQuery += `"active": "${active}"`; 
+        }
+        stringQuery += `}`;
+        const jsonQuery = JSON.parse(stringQuery); 
+        if ( ! page ) { page = 1 };
+        //If no query params are set, will always return a max of 10 items...
+        if ( ! limit || limit > maxLimit ) { limit = maxLimit };
+        const movements = await Movement.find( jsonQuery )
+                                        .skip( (page - 1) * limit )
+                                        .limit( limit )
+                                        .sort({ createdAt: 'descending'} );
         if ( ! movements ) {
             return res.status(500).json({ 
                 message: 'Something went wrong... We are working hard to solve it!' 
@@ -39,7 +69,6 @@ export async function getMovements(req:Request, res:Response, next: NextFunction
         console.log(error);
         get500(req, res, next);
     }
-    //TODO: Pagination
 }
 
 export async function getMovement(req:Request, res:Response, next: NextFunction) {
@@ -110,7 +139,7 @@ export async function addMovement(req:Request, res:Response, next: NextFunction)
             return res.status(400).json({ message: `Can't add movement. Saving id ${savingId} has been deleted` });
         }
         //Checks saving amount...
-        const enteredAmount = body.amount;
+        const enteredAmount = Number(body.amount);
         let oldAmount = saving.amount;
         if ( enteredAmount < 0 && Math.abs(enteredAmount) > oldAmount ) {
             return res.status(400).json({ message: `Amount to sustract ${enteredAmount} is greater than existing amount ${oldAmount} `});

@@ -4,8 +4,7 @@ import { getMovements, getMovement, addMovement, patchMovement, deleteMovement  
 
 const router = Router();
 
-router.get('', getMovements);       //movements?savingId=:savingId
-                                    //TODO movements?currencyId=:currencyId
+router.get('', getMovements);   //movements?savingId=:savingId?currencyId=:currencyId?active=:active
                                     //TODO movements?createdFrom=:createdFrom
                                     //TODO movements?createdTo=:createdTo
 router.post('/', addMovement);
