@@ -12,6 +12,7 @@ type RequestBody = { currencyId: string, tagId: string };
 
 /**
  * Function getSavings:
+ *      - Retrieves all savings or filtered ones
  * @param req Query params (optional): currencyId, tagId, active (true/false)
  * @param res res.status().json{message} | res.status(201).json{savings: []}
  * @returns 500 - Internal error
@@ -20,15 +21,18 @@ type RequestBody = { currencyId: string, tagId: string };
  *          200 - Savings filtered by query params populated with currency and tag info
  */
 export async function getSavings(req:Request, res:Response, next: NextFunction) {
-    const currencyId = req.query.currencyId;
-    const tagId = req.query.tagId;
-    const active = req.query.active;
+    const currencyId = req.query.currencyId as string;
+    const tagId = req.query.tagId as string;
+    const active = (req.query.active as string)?.toLowerCase();
     try {
         if ( currencyId && ! isValidObjectId(currencyId) ) {
             return res.status(400).json({ message: `Currency id ${currencyId} is not a valid id` }); 
         } 
         if ( tagId && ! isValidObjectId(tagId) ) {
             return res.status(400).json({ message: `Tag id ${tagId} is not a valid id` }); 
+        }
+        if ( active && active !== 'true' && active !== 'false' ) {
+            return res.status(400).json({ message: `Invalid -no boolean- active param '${active}'` }); 
         }
         //Query construction...
         let stringQuery: string = `{`;
@@ -42,7 +46,7 @@ export async function getSavings(req:Request, res:Response, next: NextFunction) 
             stringQuery += `"tag": "${tagId}"`;
             q += 1;
         }
-        if ( active && ( active === 'true' || active === 'false' )) { 
+        if ( active ) { 
             if ( q > 0 ) { stringQuery += `, `; }
             stringQuery += `"active": "${active}"`; 
         }
