@@ -53,10 +53,10 @@ const NewSavingForm = (props) => {
         };
         const response = await postData('savings', savingData);
         if ( response.status === 201 ) {
-            alert(response.status, response.response.message);
+            alert(response.status, response.message);
             navigate(0);
         } else {
-            alert(response.status, response.response.message);
+            alert(response.status, response.message);
             props.onSubmitSuccess();
         }   
     }
@@ -81,7 +81,7 @@ const NewSavingForm = (props) => {
                     <label>Currency:</label>
                     <select>
                         {loadedCurrencies.map(({ id, name }) => 
-                        <option value={id} id={id} ref={currencyIdInputRef}>{name}</option>)}
+                        <option required value={id} id='currencyId' ref={currencyIdInputRef}>{name}</option>)}
                     </select>    
                 </div>
             </div>
@@ -90,7 +90,7 @@ const NewSavingForm = (props) => {
                 <label>Tag:</label>
                     <select>
                         {loadedTags.map(({ id, name }) => 
-                        <option value={id} id={id} ref={tagIdInputRef}>{name}</option>)}
+                        <option required value={id} id='tagId' ref={tagIdInputRef}>{name}</option>)}
                     </select>    
                 </div>
             </div>

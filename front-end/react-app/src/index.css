@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind variants;
+
 * {
   box-sizing: border-box;
 }
@@ -5,7 +10,6 @@
 body {
   margin: 0;
   font-family: sans-serif;
-  margin: 3rem;
   background-color: #dfdfdf;
 }
 
@@ -38,6 +42,7 @@ h1, h2 {
   background-color: #f8dae9;
 }
 
+/*
 .card {
   background-color: white;
   border-radius: 4px;
@@ -45,7 +50,7 @@ h1, h2 {
   padding: 1rem;
   width: 20rem;
 }
-
+*/
 .actions {
   text-align: right;
 }

@@ -18,9 +18,9 @@ const HomePage = () => {
     }
 
     return (
-        <section>
+        <section className="w-5/6 m-auto">
             <h1>My Savings...</h1>
-            <div className={classes.grid}>
+            <div>
                 <div className={classes.actions}>
                     <button onClick={openModalHandler}>
                         + New Saving
