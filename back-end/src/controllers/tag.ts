@@ -9,11 +9,12 @@ type RequestBody = { name: string, description: string };
 
 /**
  * Function getTags: 
- *      - Returns all tags or tags whose name contains the specified name keyword
+ *      - Returns all tags or tags whose name contains the specified name keyword,
+ *          sorted by name ascending
  * @param req Optional query param: name
  * @param res res.status().json{message} | res.status(200).json{tags: []}
  * @returns 404 - There´s no tag named as specified
- *          200 - All existing tags
+ *          200 - All existing tags, sorted by name ascending
  *          200 - Tags filtered by 'name' containing the provided keyword (optional query param)
  */
 export async function getTags(req:Request, res:Response, next: NextFunction) {
@@ -30,7 +31,7 @@ export async function getTags(req:Request, res:Response, next: NextFunction) {
             }
             return res.status(200).json({tags: tags});
         } 
-        const tags = await Tag.find();
+        const tags = await Tag.find().sort({ name: 'ascending' });
         if ( ! tags ) {
             return res.status(404).json({ 
                 message: 'No tags where found' 
