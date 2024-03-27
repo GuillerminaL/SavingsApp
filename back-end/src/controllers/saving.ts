@@ -92,7 +92,7 @@ export async function getSaving(req:Request, res:Response, next: NextFunction) {
             const codeFrom = saving.currency.code;
             console.log(codeFrom, enteredCode);
             const amount = Number(saving.amount);
-            const convertion = await currencyConvertion(enteredCode, codeFrom, amount);
+            const convertion = await currencyConvertion(codeFrom, enteredCode, amount);
             if ( typeof convertion === "string" ) {
                 return res.status(400).json({ message: convertion });
             }
