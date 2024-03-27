@@ -10,11 +10,12 @@ type RequestBody = { name: string, imageUrl: string | null };
 
 /**
  * Function getCurrencies: 
- *      - Returns all currencies or currencies whose name contains the specified name keyword
+ *      - Returns all currencies or currencies whose name contains the specified name keyword,
+ *          sorted by name ascending
  * @param req Optional query param: name
  * @param res res.status().json{message} | res.status(200).json{currencies: []}
  * @returns 404 - There´s no currency named as specified
- *          200 - All existing currencies
+ *          200 - All existing currencies, sorted by name ascending
  *          200 - Currency filtered by 'name' containing keyword (optional query param)
  */
 export async function getCurrencies(req:Request, res:Response, next: NextFunction) {
@@ -31,7 +32,7 @@ export async function getCurrencies(req:Request, res:Response, next: NextFunctio
             }
             return res.status(200).json({currencies: currencies});
         } 
-        const currencies = await Currency.find();
+        const currencies = await Currency.find().sort({ name: 'ascending'} );;
         if ( ! currencies ) {
             return res.status(500).json({ 
                 message: 'Something went wrong... We are working hard to solve it!' 
