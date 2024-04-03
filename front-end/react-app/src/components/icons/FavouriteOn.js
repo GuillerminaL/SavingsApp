@@ -1,6 +1,6 @@
 const FavouriteOn = () => {
     return (
-        <svg width="40px" height="40px" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg" arialabelledby="favouriteIconTitle" stroke="#71717A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="#71717A" color="#000000">
+        <svg width="25px" height="25px" viewBox="0 0 24 24" role="img" xmlns="http://www.w3.org/2000/svg" arialabelledby="favouriteIconTitle" stroke="#71717A" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" fill="#71717A" color="#000000">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
             <g id="SVGRepo_iconCarrier"> <title id="favouriteIconTitle">Favourite</title></g>

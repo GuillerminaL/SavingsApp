@@ -1,33 +1,48 @@
-import { useContext } from 'react';
+import { useState } from 'react';
 import { Link } from 'react-router-dom';
 
-import FavoritesContext from '../../store/favorites-context';
-
-
 const MainNavigation = () => {
-    const favoritesCtx = useContext(FavoritesContext);
+    const [showMobileMenu, setShowMobileMenu] = useState(false);
+    const toggleMobileMenu = () => setShowMobileMenu((previousState) => !previousState);
 
     return (
-        <header className="bg-white border-gray-100 dark:bg-gray-900">
-            <div className="max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4">
-                <h1 className="self-center text-2xl font-semibold whitespace-nowrap dark:text-white">Savings App</h1>
-                <nav className="hidden w-full md:block md:w-auto">
-                    <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-gray-100 rounded-lg bg-gray-50 md:flex-row md:space-x-8 rtl:space-x-reverse md:mt-0 md:border-0 md:bg-white dark:bg-gray-800 md:dark:bg-gray-900 dark:border-gray-700">
-                        <li><Link to='/' className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent" >Home</Link></li>
-                        <li><Link to='/currencies' className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Currencies</Link></li>
-                        <li><Link to='/tags' className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">Tags</Link></li>
-                        <li><Link to='/favorites' className="block py-2 px-3 text-gray-900 rounded hover:bg-gray-100 md:hover:bg-transparent md:border-0 md:hover:text-blue-700 md:p-0 dark:text-white md:dark:hover:text-blue-500 dark:hover:bg-gray-700 dark:hover:text-white md:dark:hover:bg-transparent">
-                                Favorites
-                                <span className="bg-red-600 text-white rounded py-1 px-2 ml-1 text-sm">{favoritesCtx.totalFavorites}</span>
-                            </Link>
-                        </li>
+        <header className="flex flex-col sticky top-0 z-10 bg-gray-800 shadow-lg rounded-2xl p-4">
+            <nav className="container mx-auto px-6 py-3">
+                <div className="flex items-center justify-between">
+                <div className="text-white font-bold text-xl">
+                    <a href="/">
+                        <h1 className="self-center text-2xl font-semibold whitespace-nowrap text-white">Savings App</h1>
+                    </a>
+                </div>
+                <div className="hidden md:block">
+                    <ul className="flex items-center space-x-8">
+                        <li><Link to="/" className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300">Home</Link></li>
+                        <li><Link to="/savings" className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300">Savings</Link></li>
+                        <li><Link to="/currencies" className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300">Currencies</Link></li>
+                        <li><Link to="/tags" className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300">Tags</Link></li>
                     </ul>
-                </nav>
-            </div>
-            
+                </div>
+                <div className="md:hidden">
+                    <button className="outline-none mobile-menu-button" onClick={toggleMobileMenu}> 
+                    <svg className="w-6 h-6 text-white" xshow="!showMenu" fill="none" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" viewBox="0 0 24 24" stroke="currentColor">
+                        <path d="M4 6h16M4 12h16M4 18h16"></path>
+                    </svg>
+                    </button>
+                </div>
+                </div>
+                {showMobileMenu &&                 
+                    <div className="mobile-menu lg:hidden">
+                        <ul className="mt-4 space-y-4">
+                            <li><Link to="/" className="block px-4 py-2 text-white bg-gray-900 rounded-md hover:bg-green-500 p-2">Home</Link></li>
+                            <li><Link to="/savings" className="block px-4 py-2 text-white bg-gray-900 rounded-md hover:bg-green-500 p-2">Savings</Link></li>
+                            <li><Link to="/currencies" className="block px-4 py-2 text-white bg-gray-900 rounded-md hover:bg-green-500 p-2">Currencies</Link></li>
+                            <li><Link to="/tags" className="block px-4 py-2 text-white bg-gray-900 rounded-md hover:bg-green-500 p-2">Tags</Link></li>
+                        </ul>
+                    </div>    
+                }
+            </nav>
         </header>
     );
-
 }
 
 export default MainNavigation;

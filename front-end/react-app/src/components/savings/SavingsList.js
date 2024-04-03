@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 
 import { fetchData } from '../../data/data';
-import classes from './css/SavingsList.module.css';
 import LoadingSpinner from '../spinner/LoadingSpinner';
 import SavingItem from './SavingItem';
 
-const SavingsList = () => {
+const SavingsList = ({ view }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedSavings, setLoadedSavings] = useState([]);
 
@@ -19,6 +18,7 @@ const SavingsList = () => {
                 tagName: data.savings[key].tag.name,
                 tagDescription: data.savings[key].tag.description,
                 currencyId: data.savings[key].currency._id,
+                currencyCode: data.savings[key].currency.code,
                 currencyName: data.savings[key].currency.name,
                 currencyImage: data.savings[key].currency.imageUrl,
                 amount: data.savings[key].amount
@@ -42,12 +42,13 @@ const SavingsList = () => {
     }
 
     return (
-        <ul className={classes.list}>
+        <ul className="w-full p-4 justify-center list-none">
             {loadedSavings.map((saving) => (
-                <SavingItem
+                <SavingItem view={view}
                   key={saving.id}
                   id={saving.id}
                   currencyId={saving.currencyId}
+                  currencyCode={saving.currencyCode}
                   currencyName={saving.currencyName}
                   currencyImage={saving.currencyImage}
                   tagId={saving.tagId}

@@ -53,7 +53,7 @@ export async function getSavings(req:Request, res:Response, next: NextFunction) 
         stringQuery += `}`;
         const jsonQuery = JSON.parse(stringQuery);
         const savings = await Saving.find( jsonQuery )
-            .populate({ path: 'currency', select: 'name imageUrl _id' })
+            .populate({ path: 'currency', select: 'code name imageUrl _id' })
             .populate({ path: 'tag', select: 'name description _id' })
             .exec();
         if ( ! savings ) {

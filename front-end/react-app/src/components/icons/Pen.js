@@ -1,6 +1,6 @@
-const Pen = () => {
+const Pen = ({width, height}) => {
     return (
-        <svg width="30px" height="30px" fill="#808184" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#b3b2b2" strokeWidth="0.00032">
+        <svg width={width} height={height} className="fill-[#808184] group-hover:fill-white" viewBox="0 0 32 32" version="1.1" xmlns="http://www.w3.org/2000/svg" stroke="#b3b2b2" strokeWidth="0.00032">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
             <g id="SVGRepo_iconCarrier"> 

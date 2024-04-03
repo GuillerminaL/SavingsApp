@@ -52,21 +52,19 @@ export async function deleteData(resource, id) {
 
 
 /*--------------------------------------------------------------------------------*/
-export async function editData(resource, id, data) {
+export async function patchData(resource, id, data) {
     console.log("editing" + resource + id + data);
-    // try {
-    //     const response = await fetch(`${API_HOST}/${resource}/${id}`, {
-    //         method: 'DELETE'
-    //     });
-    //     const responseData = await response.json();
-    //     const result = {
-    //         status: response.status,
-    //         response: responseData
-    //     }
-    //     return result;
-    // } catch (error) {
-    //     console.log(error);
-    //     return;
-    // }
+    try {
+        const response = await fetch(`${API_HOST}/${resource}/${id}`, 
+        {
+            method: 'PATCH',
+            body: JSON.stringify(data),
+            headers: {'Content-Type': 'application/json'}
+        });
+        return await response.json();
+    } catch (error) {
+        console.log(error);
+        return;
+    }
 }
 

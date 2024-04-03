@@ -1,11 +1,10 @@
 import { useState, useEffect } from 'react';
 
 import { fetchData } from '../../data/data';
-import classes from './css/TagsList.module.css';
 import TagItem from './TagItem';
 import LoadingSpinner from '../spinner/LoadingSpinner';
 
-const TagsList = () => {
+const TagsList = ({ view }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedTags, setLoadedTags] = useState([]);
 
@@ -38,9 +37,9 @@ const TagsList = () => {
     }
 
     return (
-        <ul className={classes.list}>
+        <ul className="p-4 justify-center list-none">
             {loadedTags.map((tag) => (
-                <TagItem
+                <TagItem view={view}
                   key={tag.id}
                   id={tag.id}
                   name={tag.name}

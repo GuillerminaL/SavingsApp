@@ -1,14 +1,10 @@
-import { useContext, useState } from 'react';
+import { useState } from 'react';
 
-import Card from '../ui/card/Card';
 import classes from './css/SavingItem.module.css';
-import FavoritesContext from '../../store/favorites-context';
-import FavoriteOnIcon from '../icons/FavouriteOn';
-import FavoriteOffIcon from '../icons/FavouriteOff';
 import PlusIcon from '../icons/Plus';
 import EyeOnIcon from '../icons/EyeOn';
 import EyeOffIcon from '../icons/EyeOff';
-import AddMovementIcon from '../icons/Piggy';
+import ListIcon from '../icons/List';
 import Modal from '../ui/modals/Modal';
 import Backdrop from '../ui/Backdrop';
 import MovementsList from '../movements/MovementsList';
@@ -16,76 +12,44 @@ import NewMovementForm from '../movements/NewMovementForm';
 
 
 const SavingItem = (props) => {
-    const favoritesCtx = useContext(FavoritesContext);
-    const itemIsFavorite = favoritesCtx.itemIsFavorite(props.id);
-
     const [amountIsVisible, setAmountVisibility] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [movementsListModalIsOpen, setMovementsListModalIsOpen] = useState(false);
 
-    function toggleFavoritesStatusHandler() {
-        if (itemIsFavorite) {
-            favoritesCtx.removeFavorite(props.id);
-        } else {
-            favoritesCtx.addFavorite({
-                id: props.id,
-                currencyId: props.currencyId,
-                currencyName: props.currencyName,
-                currencyImage: props.currencyImage,
-                tagId: props.tagId,
-                tagName: props.tagName,
-                tagDescription: props.tagDescription,
-                amount: props.amount
-            });
-        }
-    }
-
     return (
-        <li className={classes.item}>
-            <Card>
-                <div className={classes.image}>
-                    <img src={props.currencyImage} alt={props.tagName} />
+        <li className="flex flex-col p-4 bg-gray-700 border-gray-600 shadow-md hover:shodow-lg rounded-2xl cursor-pointer transition ease-in duration-500  transform hover:scale-105">
+            <div className="flex flex-wrap items-center justify-between">
+                <div className="flex flex-col ml-3">
+                    <h1 className="font-medium leading-none text-gray-100">{props.tagName}</h1>
+                    { (props.view !== "simple") && 
+                        <p className="text-sm text-gray-500 leading-none mt-1">{props.tagDescription}</p> 
+                    }
                 </div>
-                <div className={classes.content}>
-                    <div className={classes.inARowContent}>
-                        <h3>{props.tagName}</h3>
-                    </div>
-                    <p>{props.tagDescription}</p>
-                    <div className={classes.inARowContent}>
-                        <p className={classes.currencyName}>{props.currencyName}</p>
-                        <h2>$ {amountIsVisible ? props.amount : '**********'}</h2>
-                        <button onClick={() => {setAmountVisibility( ! amountIsVisible );}}>
-                            { amountIsVisible ? <EyeOffIcon /> : <EyeOnIcon /> }
-                        </button>
-                    </div> 
+                <div className="flex items-center justify-between p-2">
+                    <p className="font-medium leading-none text-gray-300">{props.currencyCode}</p>
+                    <p className="font-medium leading-none text-gray-300">$ {amountIsVisible ? props.amount : '**********'}</p>
+                    <button onClick={() => {setAmountVisibility( ! amountIsVisible );}}
+                        className='group btn-primary'>
+                        { amountIsVisible ? <EyeOffIcon /> : <EyeOnIcon /> }
+                    </button>
                 </div>
-                <div className={classes.inARowContent}>
-                    <div className={classes.actionsWrapper}>
-                        <div className={classes.actions}>
-                            <div>
-                                <button onClick={() => {setMovementsListModalIsOpen(true);}}>
-                                    <PlusIcon />
-                                    <p>Show Movements</p>
-                                </button>
-                            </div>
-                            <div>
-                                <button onClick={() => {setModalIsOpen(true);}}>
-                                    <AddMovementIcon />
-                                    <p>Add Movement</p>
-                                </button>
-                            </div>
-                            <div>
-                                <button className={classes.favourite} onClick={(toggleFavoritesStatusHandler)}>
-                                    {itemIsFavorite ? <FavoriteOnIcon /> : <FavoriteOffIcon />}
-                                    <p>
-                                        {itemIsFavorite ? 'Remove Favourite' : 'Add Favourite'}
-                                    </p>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
+            </div>
+            <div className="flex justify-center flex-no-wrap pt-4 font-medium leading-none text-gray-500">
+                <div >
+                    <button className='group btn-primary' onClick={() => {setMovementsListModalIsOpen(true);}}>
+                        <ListIcon width={'25px'} height={'25px'} />
+                        <span className="text-sm leading-none p-1">Show Movements</span>
+                    </button>
                 </div>
-            </Card>
+                
+                <div>
+                    <button className='group btn-primary' onClick={() => {setModalIsOpen(true);}}>
+                        <PlusIcon width={'25px'} height={'25px'} />
+                        <span className="text-sm leading-none p-1">Add Movement</span>
+                    </button>
+                </div>
+            </div>
+
             {movementsListModalIsOpen && <Modal title={"Movements Detail"} onCancel={() => {setMovementsListModalIsOpen(false);}} onConfirm={() => {setMovementsListModalIsOpen(false);}}>
                                             <div className={classes.control}>
                                                 <h3>Saving: {props.tagName}</h3>
@@ -98,7 +62,7 @@ const SavingItem = (props) => {
             {modalIsOpen && <Modal title={"New Movement"} onCancel={() => {setModalIsOpen(false);}} onConfirm={() => {setModalIsOpen(false);}}>
                                 <NewMovementForm className={classes.form} onSubmitSuccess={() => {setModalIsOpen(false);}} />
                             </Modal>}
-            {modalIsOpen && <Backdrop onClick={() => {setModalIsOpen(false);}}/>}           
+            {modalIsOpen && <Backdrop onClick={() => {setModalIsOpen(false);}}/>}     
         </li>
     );
 }

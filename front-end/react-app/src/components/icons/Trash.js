@@ -1,6 +1,6 @@
-const Trash = () => {
+const Trash = ({ width, height }) => {
     return (
-        <svg width="30px" height="30px" fill="#808184" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xmlSpace="preserve" stroke="#a1a1a1" strokeWidth="4.096">
+        <svg width={width} height={height} className="fill-[#808184] group-hover:fill-white" version="1.1" id="Layer_1" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink" viewBox="0 0 512.00 512.00" xmlSpace="preserve" stroke="#a1a1a1" strokeWidth="4.096">
             <g id="SVGRepo_bgCarrier" strokeWidth="0"></g>
             <g id="SVGRepo_tracerCarrier" strokeLinecap="round" strokeLinejoin="round"></g>
             <g id="SVGRepo_iconCarrier"> <g> <g> <g> 
