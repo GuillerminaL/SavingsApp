@@ -53,7 +53,6 @@ export async function deleteData(resource, id) {
 
 /*--------------------------------------------------------------------------------*/
 export async function patchData(resource, id, data) {
-    console.log("editing" + resource + id + data);
     try {
         const response = await fetch(`${API_HOST}/${resource}/${id}`, 
         {

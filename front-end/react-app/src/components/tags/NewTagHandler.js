@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { Modal, Label, TextInput } from "flowbite-react";
 
 import { postData } from '../../data/data';
+import ModalActions from "../ui/modals/ModalActions";
 
 const NewTagHandler = () => { 
     const navigate = useNavigate();
@@ -34,18 +35,10 @@ const NewTagHandler = () => {
             return;
         } 
 
-        console.log(enteredData);
         setOpenModal(false);
-        return; 
-
         const response = await postData('tags', enteredData);
-        
-        if ( response.status === 201 ) {
-            alert(response.status, response.message);
-            navigate(0);
-        } else {
-            alert(response.status, response.message);
-        }
+        alert(response.message);
+        navigate(0);
     }
 
     function isValidData({ name, description }) {
@@ -93,16 +86,7 @@ const NewTagHandler = () => {
                             color={ isValid ? "" : "failure" }
                         />
                     </div>
-                    <div className="flex justify-center gap-4">
-                        <button onClick={onCancelHandler}
-                                className="btn-cancel">
-                            <span className="text-sm leading-none p-1">Cancel</span>
-                        </button>
-                        <button onClick={onConfirmHandler}
-                                className="btn-confirm">
-                            <span className="text-sm leading-none p-1">Add Tag</span>
-                        </button>
-                    </div>
+                    <ModalActions onCancelHandler={onCancelHandler} onConfirmHandler={onConfirmHandler} />
                 </div>
                 </Modal.Body>
             </Modal>

@@ -2,29 +2,16 @@ import { useNavigate } from 'react-router-dom';
 
 import { deleteData } from '../../data/data';
 import Tag from '../icons/Tag';
-import UpdateButton from '../buttons/UpdateButton';
 import DeleteButton from '../buttons/DeleteButton';
+import EditTagHandler from './EditTagHandler';
 
 const TagItem = (props) => {
     const navigate = useNavigate();
 
-    async function editTag() {
-        //TODO Patch name and description
-        console.log("editing " + props.name);
-        return;
-    }
-
-    async function deleteTag() {
-        console.log("deleting " + props.id);
-        return;
-
+    async function deleteTagHandler() {
         const response = await deleteData('tags', props.id);
-        if ( response.status === 200 ) {
-            alert(response.status, response.message);
-            navigate(0);
-        } else {
-            alert(response.status, response.message);
-        }
+        alert(response.message);
+        navigate(0);
     }
 
     return (
@@ -41,8 +28,8 @@ const TagItem = (props) => {
                 </div>
                 { (props.view !== "simple") &&
                     <div className="flex justify-center flex-no-wrap pt-4 font-medium leading-none text-gray-500">   
-                        <UpdateButton width={'20px'} height={'20px'} onConfirm={editTag} />
-                        <DeleteButton width={'20px'} height={'20px'} onConfirm={deleteTag} />
+                        <EditTagHandler width={'20px'} height={'20px'} id={props.id} currentName={props.name} currentDescription={props.description} />
+                        <DeleteButton width={'20px'} height={'20px'} onConfirm={deleteTagHandler} />
                     </div>
                 }
             </div>

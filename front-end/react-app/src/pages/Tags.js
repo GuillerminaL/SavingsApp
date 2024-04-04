@@ -1,5 +1,5 @@
 import TagsList from '../components/tags/TagsList';
-import NewTagHandler from '../components/buttons/NewTagHandler';
+import NewTagHandler from '../components/tags/NewTagHandler';
 
 const TagsPage = () => {
     return (

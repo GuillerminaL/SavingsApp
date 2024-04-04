@@ -1,16 +1,16 @@
 import { useState, useEffect } from 'react';
+import { List } from 'flowbite-react';
 
 import { fetchMovementsData } from '../../data/data';
-import classes from './css/MovementsList.module.css';
 import MovementItem from './MovementItem';
 import LoadingSpinner from '../spinner/LoadingSpinner';
 
-const MovementsList = (props) => {
+const MovementsList = ({ savingId }) => {
     const [isLoading, setIsLoading] = useState(true);
     const [loadedMovements, setLoadedMovements] = useState([]);
 
     async function getData() {
-        const data = await fetchMovementsData(props.savingId);
+        const data = await fetchMovementsData(savingId);
         const movements = []; 
         for (const key in data.movements) {
             const movement = {
@@ -40,7 +40,7 @@ const MovementsList = (props) => {
     }
 
     return (
-        <ul className={classes.list}>
+        <List className="text-sm leading-none p-1">
             {loadedMovements.map((movement) => (
                 <MovementItem
                   key={movement.id}
@@ -52,7 +52,7 @@ const MovementsList = (props) => {
                   createdAt={movement.createdAt}
                 />
             ))}
-        </ul>
+        </List>
     );
 }
 
