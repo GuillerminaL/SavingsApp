@@ -10,9 +10,21 @@ export async function fetchData(resource) {
     }
 }
 
-export async function fetchMovementsData(savingId) {
+export async function fetchMovementsData({ active, savingId, currencyId, page, limit }) {
+    let url = `${API_HOST}/movements?`; //always shows existing movements (not deleted ones)
+    if ( !active && !page && !limit && !savingId && !currencyId ) { 
+        console.log("Must specify movements at least one filter parameter: active, page, limit, savingId currencyId");
+        return; 
+    }
+    if ( active ) { url += `active=${active}&`; }
+    if ( page && page > 0 ) { url += `page=${page}&`; }
+    if ( limit && limit > 0 && limit <= 10 ) { url += `limit=${limit}&`; }
+    if ( savingId ) { url += `savingId=${savingId}&`; }
+    if ( currencyId ) { url += `currencyId=${currencyId}`; }
+  
+    return;
     try {
-        const response = await fetch(`${API_HOST}/movements?savingId=${savingId}`);
+        const response = await fetch(url);
         return await response.json();
     } catch (error) {
         console.log(error);

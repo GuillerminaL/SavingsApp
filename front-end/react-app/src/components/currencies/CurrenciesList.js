@@ -38,7 +38,7 @@ const CurrenciesList = () => {
     }
 
     return (
-        <ul className="p-4 justify-center list-none">
+        <ul className="flex flex-wrap p-4 justify-center list-none">
             {loadedCurrencies.map((currency) => (
                 <CurrencyItem
                   key={currency.id}

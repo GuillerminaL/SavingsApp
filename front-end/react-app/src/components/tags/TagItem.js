@@ -15,7 +15,7 @@ const TagItem = (props) => {
     }
 
     return (
-        <li className="flex flex-col p-4 bg-gray-700 border-gray-600 shadow-md hover:shodow-lg rounded-2xl cursor-pointer transition ease-in duration-500  transform hover:scale-105">
+        <li className="flex flex-col m-2 p-4 bg-gray-700 border-gray-600 shadow-md hover:shodow-lg rounded-2xl cursor-pointer transition ease-in duration-500  transform hover:scale-105">
             <div className="flex items-center justify-between">
                 <div className="flex items-center mr-auto">
                     <div className="inline-flex w-12 h-12">

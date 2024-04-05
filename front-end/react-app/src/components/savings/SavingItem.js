@@ -34,7 +34,7 @@ const SavingItem = (props) => {
                 <div >
                     <button className='group btn-primary' onClick={() => {setShowMovements(!showMovements);}}>
                         <ListIcon width={'25px'} height={'25px'} />
-                        <span className="text-sm leading-none p-1">{ showMovements ? "Hide movements" : "Show Movements"}</span>
+                        <span className={showMovements ? "text-sm leading-none p-1 text-green-400": "text-m leading-none p-1"} >{ showMovements ? "Hide movements" : "Show Movements"}</span>
                     </button>
                 </div>
                 <div>
@@ -44,7 +44,7 @@ const SavingItem = (props) => {
                     </button>
                 </div>
             </div>
-            { showMovements && <MovementsList savingId={props.id}/>}  
+            { showMovements && <MovementsList savingId={props.id} onClick={() => {setShowMovements(false);} } />}  
         </li>
     );
 }

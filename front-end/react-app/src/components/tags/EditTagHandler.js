@@ -84,7 +84,7 @@ const EditTagHandler = ({ width, height, id, currentName, currentDescription }) 
                                 color={ isValid ? "" : "failure" }
                             />
                         </div>
-                        <ModalActions onCancelHandler={onCancelHandler} onConfirmHandler={onConfirmHandler} />
+                        <ModalActions onCancelHandler={onCancelHandler} onConfirmHandler={onConfirmHandler} btnText={"Edit"}/>
                     </div>
                 </Modal.Body>
             </Modal>

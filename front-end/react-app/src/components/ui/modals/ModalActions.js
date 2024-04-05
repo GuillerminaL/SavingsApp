@@ -1,4 +1,4 @@
-const ModalActions = ({ onCancelHandler, onConfirmHandler }) => {
+const ModalActions = ({ onCancelHandler, onConfirmHandler, btnText }) => {
     return(
         <div className="flex justify-center gap-4">
             <button onClick={onCancelHandler}
@@ -7,7 +7,7 @@ const ModalActions = ({ onCancelHandler, onConfirmHandler }) => {
             </button>
             <button onClick={onConfirmHandler}
                     className="btn-confirm">
-                <span className="text-sm leading-none p-1">Add</span>
+                <span className="text-sm leading-none p-1">{btnText ? btnText : "Add"}</span>
             </button>
         </div>
     );
