@@ -4,44 +4,56 @@ An app to keep track of personal savings. The aim is to consolidate all the savi
 
 Additionally a saving can have different shapes, e.g. euros on different bank accounts, physical tenance, etc. 
 
-### Screenshots
+## Screenshots
 
-#### Home
+### Home
 
 Shows a grid with all the personal savings, allowing to filter by tag and currency.
 
 ![Home view](documentation/HomePage.png "Home View")
 
-#### Currencies Page
+### Currencies Page
 
 Shows a list of available currencies
 
 ![Currencies view](documentation/CurrenciesPage.png "Currencies View")
 
-#### Savings Page
+### Savings Page
 
 Shows a list of current savings
 
 ![Savings view](documentation/SavingsPage.png "Savings view")
 
-##### Adding a new saving
+#### Adding a new saving
 
 Allows to add a new saving in a specific currency and tag.
 
 ![Add saving](documentation/OnNewSaving.png "Add saving")
 
 
-##### Showing a saving movements list
+#### Showing a saving movements list
 
-![Show movements](documentation/OnShowSavingMovementsErrorHandler.png "Show movements error")
+Allows to see a detailed list of movements with pagination
 
-#### Tags Page
+##### Scenario 1: A saving has movements
+
+![Show movements](documentation/OnShowSavingMovementsList.png "Show movements")
+
+##### Scenario 2: A saving has no related movements
+
+![Show no movements yet](documentation/OnShowSavingMovementsEmptyList.png "Show movements when no movements yet")
+
+##### Scenario 3: Internal error handler
+
+![Show movements error](documentation/OnShowSavingMovementsErrorHandler.png "Show movements error")
+
+### Tags Page
 
 Shows a list of current tags
 
 ![Tags view](documentation/TagsPage.png "Tags View")
 
-##### Adding a new tag
+#### Adding a new tag
 
 Allows to add a new tag.
 
@@ -51,11 +63,11 @@ Showing required fields error
 
 ![Add tag](documentation/OnAddTagRequiredFieldsError.png "Add Tag Error")
 
-##### Editing a tag name and/or description
+#### Editing a tag name and/or description
 
 ![Edit tag](documentation/OnEditTag.png "Edit Tag")
 
-##### Removing a tag
+#### Removing a tag
 
 ![Remove saving](documentation/OnRemoveTag.png "Remove Tag")
 

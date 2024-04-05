@@ -21,8 +21,6 @@ export async function fetchMovementsData({ active, savingId, currencyId, page, l
     if ( limit && limit > 0 && limit <= 10 ) { url += `limit=${limit}&`; }
     if ( savingId ) { url += `savingId=${savingId}&`; }
     if ( currencyId ) { url += `currencyId=${currencyId}`; }
-  
-    return;
     try {
         const response = await fetch(url);
         return await response.json();
