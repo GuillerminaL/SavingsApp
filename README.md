@@ -8,31 +8,61 @@ Additionally a saving can have different shapes, e.g. euros on different bank ac
 
 #### Home
 
-Shows a grid with all the savings.
+Shows a grid with all the personal savings, allowing to filter by tag and currency.
 
-![Home view](home.png "Home View")
+![Home view](documentation/HomePage.png "Home View")
 
-#### Adding a new currency
+#### Currencies Page
 
-Allows to add a new currency.
+Shows a list of available currencies
 
-![Add currency](add-currency.png "Add currency")
+![Currencies view](documentation/CurrenciesPage.png "Currencies View")
 
-#### Adding a new saving
+#### Savings Page
 
-Allows to add a new saving in a specific currency.
+Shows a list of current savings
 
-![Add saving](add-saving.png "Add Saving")
+![Savings view](documentation/SavingsPage.png "Savings view")
 
-#### Adding to favourites
+##### Adding a new saving
 
-By clicking the `add to Favourites`, adds a saving to the favourites list. 
+Allows to add a new saving in a specific currency and tag.
 
-![Add to favourites](add-fav.png "Add to favourites")
+![Add saving](documentation/OnNewSaving.png "Add saving")
+
+
+##### Showing a saving movements list
+
+![Show movements](documentation/OnShowSavingMovementsErrorHandler.png "Show movements error")
+
+#### Tags Page
+
+Shows a list of current tags
+
+![Tags view](documentation/TagsPage.png "Tags View")
+
+##### Adding a new tag
+
+Allows to add a new tag.
+
+![Add tag](documentation/OnNewTag.png "Add Tag")
+
+Showing required fields error
+
+![Add tag](documentation/OnAddTagRequiredFieldsError.png "Add Tag Error")
+
+##### Editing a tag name and/or description
+
+![Edit tag](documentation/OnEditTag.png "Edit Tag")
+
+##### Removing a tag
+
+![Remove saving](documentation/OnRemoveTag.png "Remove Tag")
 
 
 ### Future work
 
+- Filtering
 - Google login
 - Currency reports
 - Currency converter
