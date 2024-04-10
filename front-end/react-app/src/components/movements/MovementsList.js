@@ -79,7 +79,7 @@ const MovementsList = ({ savingId, onClick }) => {
                     />
                 ))}
             </List>
-            { !failedConnection && loadedMovements.length > 0 && <PaginationHandler /> }
+            {/* { !failedConnection && loadedMovements.length > 0 && <PaginationHandler /> } */}
         </section>
     );
 }
