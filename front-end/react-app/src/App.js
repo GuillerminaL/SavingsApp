@@ -1,4 +1,4 @@
-import { Route, Routes, Navigate } from 'react-router-dom';
+import { Route, Routes } from 'react-router-dom';
 
 import Layout from './components/layouts/Layout';
 import LoginLayout from './components/layouts/LoginLayout';
@@ -6,6 +6,7 @@ import HomePage from './pages/Home';
 import SavingsPage from './pages/Savings';
 import CurrenciesPage from './pages/Currencies';
 import TagsPage from './pages/Tags';
+import Error404 from './pages/Error404';
 
 function App() {
   return (
@@ -15,7 +16,7 @@ function App() {
       <Route path='/savings' exact element={<Layout><SavingsPage /></Layout>}></Route>
       <Route path='/currencies' exact element={<Layout><CurrenciesPage /></Layout>}></Route>
       <Route path='/tags' exact element={<Layout><TagsPage /></Layout>}></Route>
-      <Route path='*' exact element={<Layout><HomePage /></Layout>}></Route>
+      <Route path='*' exact element={<Layout><Error404 /></Layout>}></Route>
     </Routes>
   );
 }

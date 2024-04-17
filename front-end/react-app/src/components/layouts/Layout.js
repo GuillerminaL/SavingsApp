@@ -1,11 +1,13 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useLoggedIn } from '../../store/LoggedInContext';
 import MainNavigation from './MainNavigation';
 
 const Layout = ({ children }) => {
     const navigate = useNavigate();
+    const { isLoggedIn } = useLoggedIn();
     useEffect(() => {
-        if (!localStorage.getItem('email')) {
+        if (!isLoggedIn) {
             navigate('/login');
         }
     })

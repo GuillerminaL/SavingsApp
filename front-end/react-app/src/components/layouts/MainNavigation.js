@@ -1,20 +1,12 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { googleLogout } from '@react-oauth/google';
-import { useNavigate } from 'react-router-dom';
+import { useLoggedIn } from '../../store/LoggedInContext';
 
 const MainNavigation = () => {
-    const navigate = useNavigate();
+    const { logout } = useLoggedIn();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu((previousState) => !previousState);
-    const logoutHandler = () => {
-        googleLogout();
-        localStorage.removeItem('email');
-        localStorage.removeItem('name');
-        localStorage.removeItem('picture');
-        debugger;
-        navigate('/home');
-    };
+
     return (
         <header className="flex flex-col sticky top-0 z-10 bg-gray-800 shadow-lg rounded-2xl p-4">
             <nav className="container mx-auto px-6 py-3">
@@ -30,7 +22,7 @@ const MainNavigation = () => {
                         <li><Link to="/savings" className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300">Savings</Link></li>
                         <li><Link to="/currencies" className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300">Currencies</Link></li>
                         <li><Link to="/tags" className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300">Tags</Link></li>
-                        <li><button className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300" onClick={logoutHandler}>Sign Out</button></li>
+                        <li><button className="text-white hover:bg-green-500 p-2 rounded-md transition ease-in duration-300" onClick={logout}>Sign Out</button></li>
                     </ul>
                 </div>
                 <div className="md:hidden">
