@@ -6,6 +6,12 @@ Additionally a saving can have different shapes, e.g. euros on different bank ac
 
 ## Screenshots
 
+### Sign In with Google
+
+Provides access to app features by registering or login in with a Google Account.
+
+![Google Sign In](documentation/GoogleSignIn.png "Google Sign In")
+
 ### Home
 
 Shows a grid with all the personal savings, allowing to filter by tag and currency.
@@ -29,6 +35,12 @@ Shows a list of current savings
 Allows to add a new saving in a specific currency and tag.
 
 ![Add saving](documentation/OnNewSaving.png "Add saving")
+
+#### Adding a new movement
+
+Allows to make a new addition or sustraction movement to a saving.
+
+![Add movement](documentation/OnAddSavingMovement.png "Add movement")
 
 
 #### Showing a saving movements list
@@ -72,9 +84,10 @@ Showing required fields error
 ![Remove saving](documentation/OnRemoveTag.png "Remove Tag")
 
 
-### Future work
-
-- Filtering
+### Current work
 - Google login
-- Currency reports
+
+### Future work
+- Filtering
 - Currency converter
+- Currency reports
