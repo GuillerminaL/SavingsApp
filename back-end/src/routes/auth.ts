@@ -1,16 +1,13 @@
 import { Router } from "express";
-import { passportAuthenticate, passportAuthenticateCallback, onSuccess, onError, onSignout } from "../controllers/google_oauth";
-import passport from 'passport';
+import { signup, login, refreshToken, activateAccount, deactivateAccount } from "../controllers/auth";
+import { authToken } from "../middleware/authToken";
+import { authUser } from "../middleware/authUser";
 const router = Router();
 
-router.get('/google', passport.authenticate('google', { scope: ['profile', 'email'] }));
-router.get('/google/callback', passport.authenticate('google', { failureRedirect: '/login' }),
-function(req, res) {
-  // Successful authentication, redirect to frontend or send token
-  res.redirect('/');
-});
-router.get('/success', onSuccess);
-router.get('/error', onError);
-router.get('/signout', onSignout);
+router.post('/signup', signup);
+router.post('/login', login);
+router.post('/refresh-token', authToken, authUser, refreshToken);
+router.patch('/accounts/recover/:userId', activateAccount);
+router.patch('/accounts/deactivate', authToken, authUser, deactivateAccount);
 
 export default router;

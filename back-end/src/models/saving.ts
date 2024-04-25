@@ -21,6 +21,11 @@ const savingSchema = new Schema({
             type: Boolean,
             required: true,
             default: true
+        },
+        userId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
         }
     }, 
     {timestamps: true}
@@ -33,6 +38,7 @@ export type PopulatedSavingType = {
     currency: CurrencyType,
     amount: Number,
     active: Boolean,
+    userId: Schema.Types.ObjectId,
     createdAt: Date,
     updatedAt: Date
 };

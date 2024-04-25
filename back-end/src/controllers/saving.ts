@@ -21,6 +21,8 @@ type RequestBody = { currencyId: string, tagId: string };
  *          200 - Savings filtered by query params populated with currency and tag info
  */
 export async function getSavings(req:Request, res:Response, next: NextFunction) {
+    console.log(req.user);
+    
     const currencyId = req.query.currencyId as string;
     const tagId = req.query.tagId as string;
     const active = (req.query.active as string)?.toLowerCase();
