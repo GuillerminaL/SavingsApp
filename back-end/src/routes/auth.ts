@@ -6,8 +6,8 @@ const router = Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
-router.post('/refresh-token', authToken, authUser, refreshToken);
-router.patch('/accounts/recover/:userId', activateAccount);
+router.patch('/accounts/refresh-token', authToken, authUser, refreshToken);
+router.patch('/accounts/recover', activateAccount);
 router.patch('/accounts/deactivate', authToken, authUser, deactivateAccount);
 
 export default router;

@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from 'express';
 import { isValidObjectId } from 'mongoose';
 import { compareSync, hashSync } from 'bcryptjs';
 
-import User, { UserType } from '../models/user';
+import User from '../models/user';
 import Saving from '../models/saving';
 import Movement from '../models/movement';
 import { getToken, getRefreshedToken, deleteRefreshToken } from '../utils/tokenHandler';
@@ -123,16 +123,30 @@ export async function refreshToken(req:Request, res:Response, next: NextFunction
 }
 
 export async function activateAccount(req:Request, res:Response, next: NextFunction) {
-    const userId = req.params.userId;
+    const email = req.body.email as string;
+    const password = req.body.password as string;
+    let newPassword = req.body.newPassword;
     try {
-        if ( ! isValidObjectId(userId) ) {
-            return res.status(400).json({ message: `User id ${userId} is not a valid id` }); 
+        const user = await User.findOne({ email: email });
+        if ( ! user ) {
+            return res.status(404).json({message: `Account email ${email} not found`}); 
         }
-        const checkUser = await User.findByIdAndUpdate(userId, { active: true });
-        if ( ! checkUser ) {
-            return res.status(404).json({message: `User id ${userId} not found`}); 
+        if ( user.active ) {
+            return res.status(409).json({message: `Already active user account`}); 
         }
-        return res.status(200).json({ message: `Succefully activated account user id ${userId}`, user: checkUser });
+        if ( ! password || ! user.password || ! compareSync(password, user.password) ) {
+            return res.status(400).json({message: `Incorrect password`}); 
+        } 
+        if ( ! newPassword ) {
+            return res.status(400).json({ message: 'New password is required'});
+        }
+        newPassword = hashSync(req.body.password, 12);
+        user.active = true;
+        user.password = newPassword;
+        const updatedUser = await  user.save();
+        if ( updatedUser ) {
+            return res.status(200).json({ message: `Succefully activated account user email ${email}`, user: updatedUser });
+        } 
     } catch (error) {
         console.log(error);
         return get500(req, res, next);
