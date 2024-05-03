@@ -5,18 +5,21 @@ import { GoogleOAuthProvider } from '@react-oauth/google';
 
 import { GOOGLE_CLIENT_ID } from './config/index';
 import { LoggedInContextProvider } from './store/LoggedInContext';
+import { LoggedInUserContextProvider } from './store/LoggedInUserContext';
 import './output.css';
 import App from './App';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
-root.render(
-    
+root.render(   
     <BrowserRouter>
-        <LoggedInContextProvider>
-            <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
-                <App />
-            </GoogleOAuthProvider>
-        </LoggedInContextProvider>
+        
+            <LoggedInContextProvider>
+                <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
+                    <LoggedInUserContextProvider>
+                        <App />
+                    </LoggedInUserContextProvider>
+                </GoogleOAuthProvider>
+            </LoggedInContextProvider>
+        
     </BrowserRouter>
-    
 );

@@ -51,20 +51,20 @@ const MovementsList = ({ savingId, onClick }) => {
 
     return (
         <section>
-            <List className="text-sm leading-none p-1">
+            <List className="p-1 text-sm leading-none">
                 { failedConnection && 
-                    <List.Item onClick={onClick} className='flex flex-col text-center text-sm text-gray-400 font-normal leading-none mt-1 p-1 bg-gray-600 rounded-md' >
-                        <svg xmlns="http://www.w3.org/2000/svg" className="w-6 h-6 m-2 flex items-center text-blue-400 mx-auto" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <List.Item onClick={onClick} className='mt-1 flex flex-col rounded-md bg-gray-600 p-1 text-center text-sm font-normal leading-none text-gray-400' >
+                        <svg xmlns="http://www.w3.org/2000/svg" className="m-2 mx-auto flex size-6 items-center text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
                         </svg>
-                        <h2 className="text-sm font-bold py-2 text-gray-200">Ups! Something went wrong...</h2>
-                        <p className="text-xs text-gray-400 px-8 py-2">We are working hard to solve it!</p>
+                        <h2 className="py-2 text-sm font-bold text-gray-200">Ups! Something went wrong...</h2>
+                        <p className="px-8 py-2 text-xs text-gray-400">We are working hard to solve it!</p>
                     </List.Item>
                 }
                 { ( !failedConnection && loadedMovements && loadedMovements.length === 0) && 
-                    <List.Item className='flex flex-col text-center text-sm text-gray-400 font-normal leading-none mt-1 p-1 bg-gray-600 rounded-md' >
-                        <h2 className="text-sm font-bold py-4 text-gray-200">This saving has no movements yet</h2>
-                        <p className="text-xs text-gray-500 px-8">Try adding some!</p>
+                    <List.Item className='mt-1 flex flex-col rounded-md bg-gray-600 p-1 text-center text-sm font-normal leading-none text-gray-400' >
+                        <h2 className="py-4 text-sm font-bold text-gray-200">This saving has no movements yet</h2>
+                        <p className="px-8 text-xs text-gray-500">Try adding some!</p>
                     </List.Item>
                 }
                 { !failedConnection && loadedMovements.length > 0 && loadedMovements.map((movement) => (

@@ -10,6 +10,7 @@ const TagsList = ({ view }) => {
 
     async function getData() {
         const data = await fetchData('tags');
+        if ( ! data ) { return;}
         const tags = [];
         for (const key in data.tags) {
             const tag = {
@@ -37,8 +38,13 @@ const TagsList = ({ view }) => {
     }
 
     return (
-        <ul className="p-4 justify-center list-none">
-            {loadedTags.map((tag) => (
+        <ul className="list-none justify-center p-4">
+            { loadedTags.length === 0 && 
+                <>
+                    <h1>Seems like you don't have any tags yet... Try adding some?</h1>
+                </> 
+            }
+            {loadedTags.length > 0 && loadedTags.map((tag) => (
                 <TagItem view={view}
                   key={tag.id}
                   id={tag.id}

@@ -15,10 +15,10 @@ const Section = (props) => {
     }
 
     return(
-        <section className="flex flex-col p-4 relative items-center justify-center bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl">
+        <section className="relative flex flex-col items-center justify-center rounded-2xl border border-gray-800 bg-gray-800 p-4  shadow-lg">
             { props.buttonText && 
                 <div className="self-end p-4">
-                <button className="mb-2 md:mb-0 flex-no-shrink bg-green-400 hover:bg-green-500 px-5 py-2 text-xs shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-green-300 hover:border-green-500 text-white rounded-full transition ease-in duration-300" onClick={openModalHandler}>
+                <button className="flex-no-shrink mb-2 rounded-full border-2 border-green-300 bg-green-400 px-5 py-2 text-xs font-medium tracking-wider text-white shadow-sm transition duration-300 ease-in hover:border-green-500 hover:bg-green-500 hover:shadow-lg md:mb-0" onClick={openModalHandler}>
                     {props.buttonText}
                 </button>
             </div>

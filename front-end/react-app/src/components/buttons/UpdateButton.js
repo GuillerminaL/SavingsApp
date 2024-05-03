@@ -14,10 +14,10 @@ const UpdateButton = ({ width, height, onConfirm }) => {
    
     return (
         <>
-            <button onClick={() => setOpenModal(true)} className='group btn-primary'> 
+            <button onClick={() => setOpenModal(true)} className='btn-primary group'> 
                     <div className='flex flex-col items-center'>
                         <EditIcon width={width} height={height} />
-                        <span className="text-sm leading-none p-1">Edit</span>
+                        <span className="p-1 text-sm leading-none">Edit</span>
                     </div>
             </button>
             <Modal dismissible show={openModal} size="md" onClose={() => setOpenModal(false)} popup>

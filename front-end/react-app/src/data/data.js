@@ -2,8 +2,17 @@ import { API_HOST } from '../config/index';
 
 export async function fetchData(resource) {
     try {
-        const response = await fetch(`${API_HOST}/${resource}`);
-        return await response.json();
+        const token = localStorage.getItem('token');
+        const response = await fetch(`${API_HOST}/${resource}`, 
+        { 
+            method: 'GET', 
+            headers: new Headers({
+                Authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }),
+        });
+        const data = await response.json();
+        return data;
     } catch (error) {
         console.log(error);
         return;

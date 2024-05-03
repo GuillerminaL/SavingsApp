@@ -14,7 +14,7 @@ const CurrencyIcon = ({ currencyCode }) => {
       }, []);
     
       return (
-        <div className="pl-2 ms-2.5">
+        <div className="ms-2.5 pl-2">
           {importedComponent}
         </div>
       );

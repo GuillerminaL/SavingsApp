@@ -6,8 +6,11 @@ const router = Router();
 
 router.post('/signup', signup);
 router.post('/login', login);
-router.patch('/accounts/refresh-token', authToken, authUser, refreshToken);
+router.patch('/accounts/refresh-token', refreshToken);
 router.patch('/accounts/recover', activateAccount);
 router.patch('/accounts/deactivate', authToken, authUser, deactivateAccount);
+
+//TODO: PERMANENT DELETE
+// router.delete('/accounts/delete-forever', authToken, authUser, permanentDelete);
 
 export default router;

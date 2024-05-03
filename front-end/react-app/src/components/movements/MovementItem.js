@@ -2,9 +2,9 @@ import { List } from 'flowbite-react';
 
 const MovementItem = (props) => {  
     return (
-        <List.Item className='flex text-sm text-gray-400 font-normal leading-none mt-1 p-1 bg-gray-600 rounded-md hover:bg-gray-200 hover:text-gray-500 transition ease-in-out duration-300' >
+        <List.Item className='mt-1 flex rounded-md bg-gray-600 p-1 text-sm font-normal leading-none text-gray-400 transition duration-300 ease-in-out hover:bg-gray-200 hover:text-gray-500' >
             <p>{props.createdAt}</p>
-            <p className='min-w-80 ml-5 capitalize'>{props.concept}</p>
+            <p className='ml-5 min-w-80 capitalize'>{props.concept}</p>
             <p >$ {props.amount}</p>
         </List.Item>
     );

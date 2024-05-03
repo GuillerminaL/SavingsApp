@@ -54,17 +54,17 @@ const NewTagHandler = () => {
         <>
             <div className="self-end p-4">
                 <button onClick={() => setOpenModal(true)} className='btn-confirm'>
-                    <span className="text-sm leading-none p-1">+ New Tag</span>
+                    <span className="p-1 text-sm leading-none">+ New Tag</span>
                 </button>
             </div>
             <Modal dismissible show={openModal} size="md" onClose={onCancelHandler} popup>
                 <Modal.Header />
                 <Modal.Body>
                 <div className="space-y-6">
-                    <h3 className="text-xl font-bold py-2 text-gray-500">Add a new tag...</h3>
+                    <h3 className="py-2 text-xl font-bold text-gray-500">Add a new tag...</h3>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="name" value="Tag name" color={ isValid ? "" : "failure" } className="text-sm text-gray-400 py-2"/>
+                            <Label htmlFor="name" value="Tag name" color={ isValid ? "" : "failure" } className="py-2 text-sm text-gray-400"/>
                         </div>
                         <TextInput
                             id="name"
@@ -76,7 +76,7 @@ const NewTagHandler = () => {
                     </div>
                     <div>
                         <div className="mb-2 block">
-                            <Label htmlFor="description" value="Tag description" color={ isValid ? "" : "failure" } className="text-sm text-gray-400 py-2"/>
+                            <Label htmlFor="description" value="Tag description" color={ isValid ? "" : "failure" } className="py-2 text-sm text-gray-400"/>
                         </div>
                         <TextInput
                             id="description"

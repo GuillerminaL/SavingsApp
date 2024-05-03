@@ -10,6 +10,7 @@ const SavingsList = ({ view }) => {
 
     async function getData() {
         const data = await fetchData('savings'); 
+        if ( ! data ) { return;}
         const savings = [];
         for (const key in data.savings) {
             const saving = {
@@ -42,8 +43,13 @@ const SavingsList = ({ view }) => {
     }
 
     return (
-        <ul className="w-full p-4 justify-center list-none">
-            {loadedSavings.map((saving) => (
+        <ul className="w-full list-none justify-center p-4">
+            { loadedSavings.length === 0 && 
+                <>
+                    <h1>Seems like you don't have any savings yet... Try adding some?</h1>
+                </> 
+            }
+            {loadedSavings.length > 0  && loadedSavings.map((saving) => (
                 <SavingItem view={view}
                   key={saving.id}
                   id={saving.id}

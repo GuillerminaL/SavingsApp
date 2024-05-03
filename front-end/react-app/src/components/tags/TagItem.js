@@ -15,19 +15,19 @@ const TagItem = (props) => {
     }
 
     return (
-        <li className="flex flex-col m-2 p-4 bg-gray-700 border-gray-600 shadow-md hover:shodow-lg rounded-2xl cursor-pointer transition ease-in duration-500  transform hover:scale-105">
+        <li className="hover:shodow-lg m-2 flex cursor-pointer flex-col rounded-2xl border-gray-600 bg-gray-700 p-4 shadow-md transition duration-500 ease-in  hover:scale-105">
             <div className="flex items-center justify-between">
-                <div className="flex items-center mr-auto">
-                    <div className="inline-flex w-12 h-12">
+                <div className="mr-auto flex items-center">
+                    <div className="inline-flex size-12">
                         <Tag />
                     </div>
-                    <div className="flex flex-col ml-3">
+                    <div className="ml-3 flex flex-col">
                         <h2 className="font-medium leading-none text-gray-100">{props.name}</h2>
-                        <p className="text-sm text-gray-500 leading-none mt-1">{props.description}</p>
+                        <p className="mt-1 text-sm leading-none text-gray-500">{props.description}</p>
                     </div>
                 </div>
                 { (props.view !== "simple") &&
-                    <div className="flex justify-center flex-no-wrap pt-4 font-medium leading-none text-gray-500">   
+                    <div className="flex-no-wrap flex justify-center pt-4 font-medium leading-none text-gray-500">   
                         <EditTagHandler width={'20px'} height={'20px'} id={props.id} currentName={props.name} currentDescription={props.description} />
                         <DeleteButton width={'20px'} height={'20px'} onConfirm={deleteTagHandler} />
                     </div>

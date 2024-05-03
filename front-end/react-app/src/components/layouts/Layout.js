@@ -1,22 +1,22 @@
 import { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useLoggedIn } from '../../store/LoggedInContext';
+import { useLoggedInUser } from '../../store/LoggedInUserContext';
 import MainNavigation from './MainNavigation';
 
 const Layout = ({ children }) => {
     const navigate = useNavigate();
-    const { isLoggedIn } = useLoggedIn();
+    const { isLoggedIn } = useLoggedInUser();
     useEffect(() => {
         if (!isLoggedIn) {
             navigate('/login');
         }
     })
     return (
-        <div className="flex flex-col items-center bg-gray-900 justify-center min-h-screen">
+        <div className="flex min-h-screen flex-col items-center justify-center bg-gray-900">
             <div className="container  m-4">
-                <div className="max-w-3xl w-full mx-auto grid gap-4 grid-cols-1">
+                <div className="mx-auto grid w-full max-w-3xl grid-cols-1 gap-4">
                     <MainNavigation />
-                    <main className="w-full m-auto">
+                    <main className="m-auto w-full">
                         {children}
                     </main>
                 </div>

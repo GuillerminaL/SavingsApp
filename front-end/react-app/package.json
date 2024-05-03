@@ -29,8 +29,10 @@
     "@react-oauth/google": "^0.12.1",
     "flowbite-react": "^0.8.0",
     "jwt-decode": "^4.0.0",
+    "primereact": "^10.6.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "react-notifications": "^1.7.4",
     "react-router-dom": "^6.22.3",
     "react-scripts": "^5.0.1",
     "web-vitals": "^3.5.2"

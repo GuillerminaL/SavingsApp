@@ -49,20 +49,20 @@ const EditTagHandler = ({ width, height, id, currentName, currentDescription }) 
    
     return (
         <>
-            <button onClick={() => setOpenModal(true)} className='group btn-primary'> 
+            <button onClick={() => setOpenModal(true)} className='btn-primary group'> 
                     <div className='flex flex-col items-center'>
                         <EditIcon width={width} height={height} />
-                        <span className="text-sm leading-none p-1">Edit</span>
+                        <span className="p-1 text-sm leading-none">Edit</span>
                     </div>
             </button>
             <Modal dismissible show={openModal} size="md" onClose={onCancelHandler} popup>
                 <Modal.Header />
                 <Modal.Body>
                     <div className="space-y-6">
-                        <h3 className="text-xl font-bold py-2 text-gray-500">Edit tag...</h3>
+                        <h3 className="py-2 text-xl font-bold text-gray-500">Edit tag...</h3>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="name" value="Tag name" color={ isValid ? "" : "failure" } className="text-sm text-gray-400 py-2"/>
+                                <Label htmlFor="name" value="Tag name" color={ isValid ? "" : "failure" } className="py-2 text-sm text-gray-400"/>
                             </div>
                             <TextInput
                                 id="name"
@@ -74,7 +74,7 @@ const EditTagHandler = ({ width, height, id, currentName, currentDescription }) 
                         </div>
                         <div>
                             <div className="mb-2 block">
-                                <Label htmlFor="description" value="Tag description" color={ isValid ? "" : "failure" } className="text-sm text-gray-400 py-2"/>
+                                <Label htmlFor="description" value="Tag description" color={ isValid ? "" : "failure" } className="py-2 text-sm text-gray-400"/>
                             </div>
                             <TextInput
                                 id="description"

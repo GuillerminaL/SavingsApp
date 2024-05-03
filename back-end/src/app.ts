@@ -2,6 +2,7 @@ import 'dotenv/config';
 
 import express from 'express';
 import bodyParser from 'body-parser';
+import cors from 'cors';
 import mongoose from 'mongoose';
 
 import authRouter from './routes/auth';
@@ -20,13 +21,17 @@ const PORT = process.env.PORT || 3000;
 app.use(bodyParser.json());
 
 //CORS - Access-Control-Allow-Origin
+/*
 app.use((req, res, next) => {
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
     res.setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
     next();
 });
-
+*/
+app.use(cors({
+    origin: ['http://localhost:3000'],
+}));
 app.use('/currencies', authToken, authUser, currenciesRoutes);
 app.use('/tags', authToken, authUser, tagsRoutes);
 app.use('/savings', authToken, authUser, savingsRoutes);

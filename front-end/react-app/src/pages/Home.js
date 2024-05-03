@@ -4,17 +4,14 @@ import TagsList from '../components/tags/TagsList';
 
 const HomePage = () => {
     return (
-        <div className="grid gap-4 grid-cols-1 md:grid-cols-2">
-        
-                <section className="flex flex-col p-4 relative items-center justify-center bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl">
-                    <NewSavingHandler />
-                    <SavingsList view={"simple"}/>
-                </section>
-            
-                <section className="flex flex-col p-4 relative items-center bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl">
-                    <TagsList view={"simple"} />
-                </section>
-
+        <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
+            <section className="relative flex flex-col items-center justify-center rounded-2xl border border-gray-800 bg-gray-800 p-4  shadow-lg">
+                <NewSavingHandler />
+                <SavingsList view={"simple"}/>
+            </section>
+            <section className="relative flex flex-col items-center rounded-2xl border border-gray-800 bg-gray-800 p-4  shadow-lg">
+                <TagsList view={"simple"} />
+            </section>
         </div>
     );
 }

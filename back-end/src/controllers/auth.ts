@@ -24,7 +24,7 @@ export async function login(req:Request, res:Response, next: NextFunction) {
         if ( password && existingUser.password ) {
             const checkPassword = compareSync(password, existingUser.password);
             if ( ! checkPassword ) {
-                return res.status(404).json({message: `Incorrect password`}); 
+                return res.status(400).json({message: `Incorrect password`}); 
             }
             const token = await getToken(existingUser.id);
             if ( token ) {

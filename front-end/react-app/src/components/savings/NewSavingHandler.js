@@ -79,18 +79,18 @@ const NewSavingHandler = () => {
         <>
             <div className="self-end p-4">
                 <button onClick={() => setOpenModal(true)} className='btn-confirm'>
-                    <span className="text-sm leading-none p-1">+ New Saving</span>
+                    <span className="p-1 text-sm leading-none">+ New Saving</span>
                 </button>
             </div>
             <Modal dismissible show={openModal} size="md" onClose={onCancelHandler} popup>
                 <Modal.Header />
                 <Modal.Body>
                     <div className="space-y-6">
-                        <h3 className="text-xl font-bold py-2 text-gray-500">Add a new saving...</h3>
+                        <h3 className="py-2 text-xl font-bold text-gray-500">Add a new saving...</h3>
                         <div>
                             <div className="max-w-md">
                                 <div className="mb-2 block">
-                                    <Label htmlFor="currency" value="Select a currency" className="text-sm text-gray-400 py-2"/>
+                                    <Label htmlFor="currency" value="Select a currency" className="py-2 text-sm text-gray-400"/>
                                 </div>
                                 <Select ref={currencyIdInputRef}>
                                     {loadedCurrencies.map(({ id, name }) => 
@@ -99,7 +99,7 @@ const NewSavingHandler = () => {
                             </div>
                             <div className="max-w-md">
                                 <div className="mb-2 block">
-                                    <Label htmlFor="tag" value="Select a tag" className="text-sm text-gray-400 py-2"/>
+                                    <Label htmlFor="tag" value="Select a tag" className="py-2 text-sm text-gray-400"/>
                                 </div>
                                 <Select ref={tagIdInputRef}>
                                     {loadedTags.map(({ id, name }) => 
