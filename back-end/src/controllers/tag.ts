@@ -1,5 +1,5 @@
 import { Request, Response, NextFunction } from 'express';
-import { isValidObjectId } from 'mongoose';
+import { ObjectId, isValidObjectId } from 'mongoose';
 
 import { get500 } from './error';
 import Tag from '../models/tag';
@@ -18,11 +18,12 @@ type RequestBody = { name: string, description: string };
  *          200 - Tags filtered by 'name' containing the provided keyword (optional query param)
  */
 export async function getTags(req:Request, res:Response, next: NextFunction) {
+    const userId = req.authInfo as ObjectId;
     const enteredName = req.query.name as string;
     try {
         if ( enteredName ) {
             const regex = new RegExp(enteredName, 'i') // i for case insensitive
-            const tags = await Tag.find({ name: {$regex: regex} });
+            const tags = await Tag.find({ userId: userId, name: {$regex: regex} });
             if ( ! tags ) {
                 return res.status(500).json({message: `Something went wrong... We are working hard to solve it!`});   
             }
@@ -31,7 +32,7 @@ export async function getTags(req:Request, res:Response, next: NextFunction) {
             }
             return res.status(200).json({tags: tags});
         } 
-        const tags = await Tag.find().sort({ name: 'ascending' });
+        const tags = await Tag.find({ userId: userId }).sort({ name: 'ascending' });
         if ( ! tags ) {
             return res.status(404).json({ 
                 message: 'No tags where found' 
@@ -45,12 +46,13 @@ export async function getTags(req:Request, res:Response, next: NextFunction) {
 }
 
 export async function getTag(req:Request, res:Response, next: NextFunction) {
+    const userId = req.authInfo as ObjectId;
     const tagId = req.params.tagId;
     try {
         if ( ! isValidObjectId(tagId) ) {
             return res.status(400).json({message: `Tag id ${tagId} is not a valid id`}); 
         }
-        const tag = await Tag.findById(tagId);
+        const tag = await Tag.findOne({ _id: tagId, userId: userId });
         if ( ! tag ) {
             return res.status(404).json({message: `Tag id ${tagId} not found`});   
         }
@@ -71,6 +73,7 @@ export async function getTag(req:Request, res:Response, next: NextFunction) {
  *          201 - New tag created
  */
 export async function addTag(req:Request, res:Response, next: NextFunction) {
+    const userId = req.authInfo as ObjectId;
     const body = req.body as RequestBody;
     const enteredName = body.name as string;
     const enteredDescription = body.description as string;
@@ -83,14 +86,15 @@ export async function addTag(req:Request, res:Response, next: NextFunction) {
             return res.status(400).json({message: `Must specify a tag description`});
         }
         //Check name existence...
-        const checkName = await Tag.find({ name: enteredName });
-        if ( checkName.length !== 0 ) {
+        const checkName = await Tag.findOne({ userId: userId, name: enteredName });
+        if ( checkName ) {
             return res.status(400).json({ 
                 message: `Already exists a tag named ${enteredName}` 
             });
         }
         //Saves and returns...
         const tag = new Tag({
+            userId: userId,
             name: enteredName, 
             description: enteredDescription
         });
@@ -119,13 +123,14 @@ export async function addTag(req:Request, res:Response, next: NextFunction) {
  *          200 - Updated tag
  */
 export async function patchTag(req:Request, res:Response, next: NextFunction) {
+    const userId = req.authInfo as ObjectId;
     const tagId = req.params.tagId;
     try {
         if ( ! isValidObjectId(tagId) ) {
             return res.status(400).json({message: `Tag id ${tagId} is not a valid id`}); 
         }
         //Checks tag existence...
-        const toPatchTag = await Tag.findById(tagId);
+        const toPatchTag = await Tag.findOne({ _id: tagId, userId: userId });
         if ( ! toPatchTag ) {
             return res.status(404).json({message: `Tag id ${tagId} does not exist`});
         }
@@ -141,11 +146,11 @@ export async function patchTag(req:Request, res:Response, next: NextFunction) {
             if ( enteredName === "" ) {
                 return res.status(400).json({message: `Must specify a tag name`});
             }
-            const checkName = await Tag.find({ name: enteredName });
-            if ( checkName.length !== 0 ) {
+            const checkName = await Tag.findOne({ userId: userId, name: enteredName });
+            if ( checkName ) {
                 return res.status(400).json({ 
                     message: `Already exists a tag named ${enteredName}` 
-                });
+                }); 
             }
             toPatchTag.name = enteredName;
         }
@@ -176,20 +181,21 @@ export async function patchTag(req:Request, res:Response, next: NextFunction) {
  *          200 - Deleted 
  */
 export async function deleteTag(req:Request, res:Response, next: NextFunction) {
+    const userId = req.authInfo as ObjectId;
     const tagId = req.params.tagId;
     try {
         if ( ! isValidObjectId(tagId) ) {
             return res.status(400).json({message: `Tag id ${tagId} is not a valid id`}); 
         }
         //Checks related savings existence (active or inactive)...
-        const checkTagSavings = await Saving.findOne({ tag: tagId });
+        const checkTagSavings = await Saving.findOne({ userId: userId, tag: tagId });
         if ( checkTagSavings ) {
             return res.status(409).json({
                 message: `Can not remove Tag id ${tagId}. It has related savings`
             });
         }
         //Deletes and returns...
-        const deletedTag = await Tag.findByIdAndDelete(tagId);
+        const deletedTag = await Tag.findOneAndDelete({ _id: tagId, userId: userId });
         if ( ! deletedTag ) {
             return res.status(404).json({message: `Tag id ${tagId} not found`});
         }                

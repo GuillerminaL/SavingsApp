@@ -8,6 +8,11 @@ const tagSchema = new Schema({
         },
         description: {
             type: String
+        },
+        userId: {
+            type: Schema.Types.ObjectId,
+            required: true,
+            ref: 'User'
         }
     }, 
     {timestamps: false}
