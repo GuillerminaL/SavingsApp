@@ -1,11 +1,14 @@
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLoggedIn } from '../../store/LoggedInContext';
+import generateLetterImage from 'letter-image-generator';
 
 const MainNavigation = () => {
     const { logout } = useLoggedIn();
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu((previousState) => !previousState);
+
+    const userInitials = `${localStorage.getItem('given_name')[0]} ${localStorage.getItem('family_name')[0]}`
 
     return (
         <header className="sticky top-0 flex flex-col rounded-2xl bg-gray-800 p-4 shadow-lg z-50">
@@ -22,7 +25,13 @@ const MainNavigation = () => {
                         <li><Link to="/savings" className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500">Savings</Link></li>
                         <li><Link to="/currencies" className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500">Currencies</Link></li>
                         <li><Link to="/tags" className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500">Tags</Link></li>
-                        <li><button className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500" onClick={logout}>Sign Out</button></li>
+                        <li className='flex items-center'>
+                            <div className="w-[30px] h-[30px] bg-red-600 overflow-hidden border-1 border-white rounded-full">
+                                <img src={generateLetterImage(userInitials, 50)} />
+                            </div>
+                            
+                            <button className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500" onClick={logout}>Sign Out</button>
+                        </li>
                     </ul>
                 </div>
                 <div className="md:hidden">

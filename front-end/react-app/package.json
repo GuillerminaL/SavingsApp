@@ -11,7 +11,8 @@
     "format:check": "prettier . --check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
-    "typecheck": "tsc --noEmit"
+    "typecheck": "tsc --noEmit",
+    "tailwind": "tailwindcss -i ./src/index.css -o ./src/output.css --watch"
   },
   "browserslist": {
     "production": [
@@ -29,6 +30,7 @@
     "@react-oauth/google": "^0.12.1",
     "flowbite-react": "^0.8.0",
     "jwt-decode": "^4.0.0",
+    "letter-image-generator": "^0.2.0",
     "primereact": "^10.6.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

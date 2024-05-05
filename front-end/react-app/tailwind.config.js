@@ -9,5 +9,6 @@ module.exports = {
   theme: {
     extend: {},
   },
+  mode: 'jit',
   plugins: [flowbite.plugin()],
 };

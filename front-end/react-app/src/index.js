@@ -12,7 +12,6 @@ import App from './App';
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(   
     <BrowserRouter>
-        
             <LoggedInContextProvider>
                 <GoogleOAuthProvider clientId={GOOGLE_CLIENT_ID}>
                     <LoggedInUserContextProvider>
