@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { NotificationContainer, NotificationManager} from 'react-notifications';
+import generateLetterImage from 'letter-image-generator';
 
 import GoogleLoginHandler from '../auth/GoogleLoginHandler';
 import { manualRegister } from '../../data/auth';
@@ -28,11 +29,14 @@ const RegisterForm = () => {
             NotificationManager.error('Error', `Password and Confirm Password must be equal`);
             return;
         }
+        const userInitials = `${enteredGivenName[0]} ${enteredFamilyName[0]}`
+        const photoURL = generateLetterImage(userInitials, 50);
         const registerData = {
             email: enteredEmail,
             password: enteredPassword,
             given_name: enteredGivenName,
-            family_name: enteredFamilyName
+            family_name: enteredFamilyName,
+            photoURL,
         };
         const response = await manualRegister(registerData);
         const msg = response.data.message;
