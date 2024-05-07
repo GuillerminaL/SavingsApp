@@ -1,3 +1,99 @@
+* {
+    box-sizing: border-box;
+  }
+  
+  body {
+    margin: 0;
+    font-family: sans-serif;
+  }
+  
+  h1, h2 {
+    color: #333333;
+  }
+  
+  .btn {
+    font: inherit;
+    padding: 0.5rem 1.5rem;
+    cursor: pointer;
+    border-radius: 4px;
+    background-color: #800040;
+    color: white;
+    border: 1px solid #800040;
+    margin: 0 1rem;
+  }
+  
+  .btn:hover {
+    background-color: #9c1458;
+    border-color: #9c1458;
+  }
+  
+  .btn--alt {
+    background-color: transparent;
+    color: #800040;
+  }
+  
+  .btn--alt:hover {
+    background-color: #f8dae9;
+  }
+  
+  /*
+  .card {
+    background-color: white;
+    border-radius: 4px;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    padding: 1rem;
+    width: 20rem;
+  }
+  */
+  .actions {
+    text-align: right;
+  }
+  
+  .modal {
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+    border-radius: 6px;
+    background-color: white;
+    padding: 1rem;
+    text-align: center;
+    width: 30rem;
+    z-index: 10;
+    position: fixed;
+    top: 20vh;
+    left: calc(50% - 15rem);
+  }
+  
+  .inline {
+    display: flex;
+    justify-content: pace-around;
+    margin-bottom: 30px;
+  }
+  
+  .inARowContent {
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+    flex-wrap: nowrap;
+  }
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+
+    .btn-primary {
+      @apply flex flex-col items-center cursor-pointer p-2 hover:bg-green-400 rounded-md hover:text-white transition ease-in duration-300 mr-2;
+    }
+  
+    .btn-confirm {
+      @apply mb-2 md:mb-0 flex bg-green-400 hover:bg-green-500 px-5 py-2 text-xs rounded-md shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-green-300 hover:border-green-500 text-white transition ease-in duration-300;
+    }
+  
+    .btn-cancel {
+      @apply mb-2 md:mb-0 flex bg-gray-400 hover:bg-gray-500 px-5 py-2 text-xs rounded-md shadow-sm hover:shadow-lg font-medium tracking-wider border-2 border-gray-300 hover:border-gray-500 text-white transition ease-in duration-300;
+    }
+  
+    .main-section {
+      @apply flex flex-col p-4 relative items-center justify-center bg-gray-800 border border-gray-800 shadow-lg  rounded-2xl;
+    }
+  }
