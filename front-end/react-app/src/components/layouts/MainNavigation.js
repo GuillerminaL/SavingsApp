@@ -1,14 +1,16 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { useLoggedIn } from '../../store/LoggedInContext';
-import generateLetterImage from 'letter-image-generator';
 
 const MainNavigation = () => {
     const { logout } = useLoggedIn();
+    const [currentLocation, setCurrentLocation] = useState(window.location);
     const [showMobileMenu, setShowMobileMenu] = useState(false);
     const toggleMobileMenu = () => setShowMobileMenu((previousState) => !previousState);
 
-    const userInitials = `${localStorage.getItem('given_name')[0]} ${localStorage.getItem('family_name')[0]}`
+    useEffect(() => {
+        setCurrentLocation(window.location.pathname);
+    }, [window.location.pathname]);
 
     return (
         <header className="sticky top-0 flex flex-col rounded-2xl bg-gray-800 p-4 shadow-lg z-50">
@@ -21,13 +23,13 @@ const MainNavigation = () => {
                 </div>
                 <div className="hidden md:block">
                     <ul className="flex items-center space-x-8">
-                        <li><Link to="/home" className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500">Home</Link></li>
-                        <li><Link to="/savings" className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500">Savings</Link></li>
-                        <li><Link to="/currencies" className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500">Currencies</Link></li>
-                        <li><Link to="/tags" className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500">Tags</Link></li>
+                        <li><Link to="/home" className={`rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500 ${ currentLocation === '/home' ? 'bg-green-500' : ''}`}>Home</Link></li>
+                        <li><Link to="/savings" className={`rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500 ${ currentLocation === '/savings' ? 'bg-green-500' : ''}`}>Savings</Link></li>
+                        <li><Link to="/currencies" className={`rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500 ${ currentLocation === '/currencies' ? 'bg-green-500' : ''}`}>Currencies</Link></li>
+                        <li><Link to="/tags" className={`rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500 ${ currentLocation === '/tags' ? 'bg-green-500' : ''}`}>Tags</Link></li>
                         <li className='flex items-center'>
-                            <div className="w-[30px] h-[30px] bg-red-600 overflow-hidden border-1 border-white rounded-full">
-                                <img src={generateLetterImage(userInitials, 50)} />
+                            <div className="w-[30px] h-[30px] overflow-hidden border-1 border-white rounded-full">
+                                <img src={localStorage.getItem('picture')} />
                             </div>
                             
                             <button className="rounded-md p-2 text-white transition duration-300 ease-in hover:bg-green-500" onClick={logout}>Sign Out</button>
