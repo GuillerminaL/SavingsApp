@@ -10,13 +10,8 @@ const currencySchema = new Schema({
             type: String,
             required: true,
             unique: true
-        },
-        imageUrl: {
-            type: String,
-            required: true
         }
-    }, 
-    {timestamps: false}
+    }
 );
 
 export type CurrencyType = InferSchemaType<typeof currencySchema>;

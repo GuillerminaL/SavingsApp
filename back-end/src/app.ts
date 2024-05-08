@@ -13,6 +13,8 @@ import movementsRoutes from './routes/movements';
 import { get404, get500 } from './controllers/error';
 import { authToken } from './middleware/authToken';
 import { authUser } from './middleware/authUser';
+import populateCurrencies from './utils/populateCurrencies';
+import Currency from './models/currency';
 
 const app = express();
 
@@ -42,11 +44,14 @@ app.use(get404);
 const connectToMongoDB = () => {
     mongoose
     .connect(`${process.env.MONGODB_URL}`)
-    .then(() => {
-        console.log('Connected to MongoDB...');
-    })
+    .then(async () => {
+        console.log("MongoDB connected successfully");
+        if ( process.env.POPULATE_CURRENCIES ) {
+            await populateCurrencies();
+        }
+    })    
     .catch((err) => {
-        console.log('Error in connecting to MongoDB...' + err);
+        console.log('Error while connecting to MongoDB...' + err);
         app.use(get500);
     });
 }

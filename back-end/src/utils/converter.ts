@@ -13,12 +13,12 @@ export const CURRENCY_CODES = currencyConverter.currencyCode;
 
 export const CURRENCY_NAMES = currencyConverter.currencies; //Json { "CODE": "Currency Name"}
 
-export async function currencyConvertion(currencyCodeFrom: string, currencyCodeTo: string, amount: number): Promise<Number | String> {
-    if ( ! CURRENCY_CODES.includes(currencyCodeFrom) ) {
+export async function currencyConversion(currencyCodeFrom: string, currencyCodeTo: string, amount: number): Promise<Number | String> {
+    if ( ! CURRENCY_NAMES[currencyCodeFrom] ) {
         return `Invalid currency code ${currencyCodeFrom}`;
     } 
-    if ( ! CURRENCY_CODES.includes(currencyCodeFrom) ) {
-        return `Invalid currency code ${currencyCodeFrom}`;
+    if ( ! CURRENCY_NAMES[currencyCodeTo] ) {
+        return `Invalid currency code ${currencyCodeTo}`;
     }
     if ( amount <= 0 ) {
         return `Invalid amount ${amount}. Amount must be greater than 0`;
@@ -30,5 +30,4 @@ export async function currencyConvertion(currencyCodeFrom: string, currencyCodeT
         console.log(error);
         return `Internal Error`;
     }
-
 };

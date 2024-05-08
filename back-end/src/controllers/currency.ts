@@ -7,7 +7,7 @@ import Saving from '../models/saving';
 import Movement from '../models/movement';
 import { CURRENCY_CODES, CURRENCY_NAMES } from '../utils/converter';
 
-type RequestBody = { name: string, imageUrl: string | null };
+type RequestBody = { name: string, code: string | null };
 
 export async function getCurrencyCodes(req:Request, res:Response, next: NextFunction) {
     return res.status(200).json({ currencyCodes: CURRENCY_CODES });
@@ -75,7 +75,7 @@ export async function getCurrency(req:Request, res:Response, next: NextFunction)
  * Function addCurrency:
  *   - Name is always transform to lower case
  *   - Currency name must be unique
- * @param req 'name' and 'image url'
+ * @param req 'name' and 'code'
  * @param res res.status().json{message} | res.status(201).json{message, newCurrency}
  * @returns 400 - Must specify name | image url
  *          400 - Already exists a currency name as specified
@@ -84,14 +84,14 @@ export async function getCurrency(req:Request, res:Response, next: NextFunction)
 export async function addCurrency(req:Request, res:Response, next: NextFunction) {
     const body = req.body as RequestBody;
     const enteredName = body.name as string;
-    const enteredImageUrl = body.imageUrl as string;
+    const enteredCode = body.code as string;
     try {
         //Checks inputs...
         if ( ! enteredName ) {
             return res.status(400).json({message: `Must specify a currency name`});
         }
-        if ( ! enteredImageUrl ) {
-            return res.status(400).json({message: `Must specify a image url`});
+        if ( ! enteredCode ) {
+            return res.status(400).json({message: `Must specify a code`});
         }
         const currencyName = enteredName.toLowerCase();
         const checkName = await Currency.find({ name: currencyName });
@@ -102,8 +102,8 @@ export async function addCurrency(req:Request, res:Response, next: NextFunction)
         }
         //Saves and returns...
         const currency = new Currency({
-            name: currencyName, 
-            imageUrl: enteredImageUrl
+            code: enteredCode.toUpperCase(),
+            name: currencyName
         });
         const newCurrency = await currency.save();
         if ( ! newCurrency ) {
@@ -112,51 +112,6 @@ export async function addCurrency(req:Request, res:Response, next: NextFunction)
             });
         }
         return res.status(201).json({ message: 'Added Currency', newCurrency: newCurrency });        
-    } catch (error) {
-        console.log(error);
-        get500(req, res, next);
-    }
-}
-
-/**
- * Function patchCurrency:
- *      - Allows to change the image of a currency
- * @param req Param: Currency id
- * @param res res.status().json{message} | res.status(200).json{message, updatedCurrency}
- * @returns 400 - Invalid Currency id 
- *          400 - Must specify image url
- *          404 - Currency id not found
- *          500 - Internal error
- *          200 - Currency imageUrl has been patched
- */
-
-export async function patchCurrency(req:Request, res:Response, next: NextFunction) {
-    const currencyId = req.params.currencyId;
-    try {
-        if ( ! isValidObjectId(currencyId) ) {
-            return res.status(400).json({message: `Currency id ${currencyId} is not a valid id`}); 
-        }
-        //Checks currency existence...
-        const toPatchCurrency = await Currency.findById(currencyId);
-        if ( ! toPatchCurrency ) {
-            return res.status(404).json({message: `Currency id ${currencyId} does not exist`});
-        }
-        //Checks input...
-        const enteredImageUrl = req.body.imageUrl as string | null;
-        if ( ! enteredImageUrl ) {
-            return res.status(400).json({
-                message: `Must specify currency 'image url'`
-            });
-        }
-        toPatchCurrency.imageUrl = enteredImageUrl;
-        //Saves and returns...
-        const patchedCurrency = await toPatchCurrency.save();
-        if ( ! patchedCurrency ) {
-            return res.status(500).json({ 
-                message: 'Something went wrong... We are working hard to solve it!' 
-            });
-        }
-        res.status(200).json({ message: 'Updated Currency', updatedCurrency: patchedCurrency });
     } catch (error) {
         console.log(error);
         get500(req, res, next);
