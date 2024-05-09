@@ -46,7 +46,7 @@ const connectToMongoDB = () => {
     .connect(`${process.env.MONGODB_URL}`)
     .then(async () => {
         console.log("MongoDB connected successfully");
-        if ( process.env.POPULATE_CURRENCIES ) {
+        if ( process.env.POPULATE_CURRENCIES === 'true' ) {
             await populateCurrencies();
         }
     })    
