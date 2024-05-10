@@ -34,7 +34,7 @@ app.use((req, res, next) => {
 app.use(cors({
     origin: ['http://localhost:3000'],
 }));
-app.use('/currencies', authToken, authUser, currenciesRoutes);
+app.use('/currencies', currenciesRoutes);
 app.use('/tags', authToken, authUser, tagsRoutes);
 app.use('/savings', authToken, authUser, savingsRoutes);
 app.use('/movements', authToken, authUser, movementsRoutes);

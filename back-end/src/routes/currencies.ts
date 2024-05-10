@@ -6,7 +6,7 @@ const router = Router();
 
 router.get('/codes', getCurrencyCodes);
 router.get('/names', getCurrencyNames);
-router.get('/', getCurrencies);    //get currencies with name containing keyword /currencies?name=name                       
+router.get('/', getCurrencies);    //get currencies by code or with name containing keyword /currencies?name=name                       
 router.get('/:currencyId', getCurrency);
 
 export default router;

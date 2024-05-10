@@ -28,8 +28,17 @@ export async function getCurrencyNames(req:Request, res:Response, next: NextFunc
  *          200 - Currency filtered by 'name' containing keyword (optional query param)
  */
 export async function getCurrencies(req:Request, res:Response, next: NextFunction) {
+    const enteredCode = req.query.code as string;
     const enteredName = req.query.name as string;
     try {
+        if ( enteredCode ) {
+            const code = enteredCode.toUpperCase();
+            const currency = await Currency.findOne({ code: code });
+            if ( ! currency ) {
+                return res.status(404).json({ message: `Not found currency code ${code}`});
+            }
+            return res.status(200).json({ currency });
+        }
         if ( enteredName ) {
             const regex = new RegExp(enteredName, 'i') // i for case insensitive
             const currencies = await Currency.find({ name: {$regex: regex} });
