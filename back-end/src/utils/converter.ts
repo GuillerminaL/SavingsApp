@@ -13,21 +13,31 @@ export const CURRENCY_CODES = currencyConverter.currencyCode;
 
 export const CURRENCY_NAMES = currencyConverter.currencies; //Json { "CODE": "Currency Name"}
 
-export async function currencyConversion(currencyCodeFrom: string, currencyCodeTo: string, amount: number): Promise<Number | String> {
+export type ConverterReturnType = {
+    status: number;
+    message: string;
+    conversionAmount?: number;
+}
+
+export async function convert(amount: number, currencyCodeFrom: string, currencyCodeTo: string)
+    : Promise<ConverterReturnType> {
+    if ( CURRENCY_NAMES[currencyCodeFrom] === CURRENCY_NAMES[currencyCodeTo] ) {
+        return {status: 400, message: `Currency codes from/to are equal`};
+    }
     if ( ! CURRENCY_NAMES[currencyCodeFrom] ) {
-        return `Invalid currency code ${currencyCodeFrom}`;
+        return {status: 400, message: `Invalid currency code from ${currencyCodeFrom}`};
     } 
     if ( ! CURRENCY_NAMES[currencyCodeTo] ) {
-        return `Invalid currency code ${currencyCodeTo}`;
+        return {status: 400, message:`Invalid currency code to ${currencyCodeTo}`};
     }
     if ( amount <= 0 ) {
-        return `Invalid amount ${amount}. Amount must be greater than 0`;
+        return {status: 400, message:`Invalid amount ${amount}. Amount must be greater than 0`};
     }
     try {
-        const result: Number =  await currencyConverter.from( currencyCodeFrom ).to( currencyCodeTo ).amount( amount ).convert();
-        return result;
+        const result: number =  await currencyConverter.from( currencyCodeFrom ).to( currencyCodeTo ).amount( amount ).convert();
+        return {status: 200, message: 'Succefull conversion', conversionAmount: result};
     } catch (error) {
         console.log(error);
-        return `Internal Error`;
+        return {status: 500, message:`Internal error`};
     }
 };

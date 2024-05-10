@@ -8,10 +8,8 @@ import Movement from '../models/movement';
 import { getToken, getRefreshedToken, deleteRefreshToken } from '../utils/tokenHandler';
 import { get500 } from './error';
 
-type RequestParams = { userId: string };
-
 export async function login(req:Request, res:Response, next: NextFunction) {
-    const email = req.body.email;
+    const email = req.body.email as string;
     const password = req.body.password ? req.body.password : null;
     try {
         const existingUser = await User.findOne({ email: email });
